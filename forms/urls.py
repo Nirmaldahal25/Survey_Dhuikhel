@@ -1,5 +1,6 @@
 from django.urls import path
 from forms.views import (
+    # List Views
     WodaView,
     GenderView,
     TrainingView,
@@ -8,33 +9,75 @@ from forms.views import (
     CasteView,
     OccupationsView,
     AdmiredOccuptionView,
+    # Person Views
     PersonListCreateView,
     PersonRetrieveUpdateDeleteView,
+    # List Create Views
+    PersonsTrainingListCreateView,
+    QualificationListCreateView,
+    PersonSkillListCreateView,
+    # Retrieve Update Delete Views
+    QualificationRUDView,
+    PersonSkillRUDView,
+    PersonsTrainingRUDView,
 )
+
 from rest_framework.schemas import get_schema_view
 from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
-    path("gender/", view=GenderView.as_view(), name="list_genders"),
-    path("woda/", view=WodaView.as_view(), name="list_wodas"),
-    path("trainings/", view=TrainingView.as_view(), name="list_trainings"),
+    path("list/gender/", view=GenderView.as_view(), name="list_genders"),
+    path("list/woda/", view=WodaView.as_view(), name="list_wodas"),
+    path("list/trainings/", view=TrainingView.as_view(), name="list_trainings"),
     path(
-        "qualifications/", view=QualificationsView.as_view(), name="list_qualifications"
+        "list/qualifications/",
+        view=QualificationsView.as_view(),
+        name="list_qualifications",
     ),
-    path("religions/", view=ReligionView.as_view(), name="list_religions"),
-    path("caste/", view=CasteView.as_view(), name="list_castes"),
-    path("occupations/", view=OccupationsView.as_view(), name="list_occupations"),
-    path("persons/", view=PersonListCreateView.as_view(), name="list_persons"),
+    path("list/religions/", view=ReligionView.as_view(), name="list_religions"),
+    path("list/castes/", view=CasteView.as_view(), name="list_castes"),
+    path("list/occupations/", view=OccupationsView.as_view(), name="list_occupations"),
+    path(
+        "list/admiredoccupations/",
+        view=AdmiredOccuptionView.as_view(),
+        name="list_admired_occupations",
+    ),
+    path(
+        "persons/<int:person>/qualifications/<int:pk>/",
+        view=QualificationRUDView.as_view(),
+        name="rud_person_qualifications",
+    ),
+    path(
+        "persons/<int:person>/skills/<int:pk>/",
+        view=PersonSkillRUDView.as_view(),
+        name="rud_person_qualifications",
+    ),
+    path(
+        "persons/<int:person>/trainings/<int:pk>/",
+        view=PersonsTrainingRUDView.as_view(),
+        name="rud_person_trainings",
+    ),
+    path(
+        "persons/<int:person>/qualifications/",
+        view=QualificationListCreateView.as_view(),
+        name="list_person_qualifications",
+    ),
+    path(
+        "persons/<int:person>/skills/",
+        view=PersonSkillListCreateView.as_view(),
+        name="list_person_skills",
+    ),
+    path(
+        "persons/<int:person>/trainings/",
+        view=PersonsTrainingListCreateView.as_view(),
+        name="list_persons_training",
+    ),
     path(
         "persons/<int:pk>/",
         view=PersonRetrieveUpdateDeleteView.as_view(),
         name="update_persons",
     ),
-    path(
-        "admiredoccupations/",
-        view=AdmiredOccuptionView.as_view(),
-        name="list_admired_occupations",
-    ),
+    path("persons/", view=PersonListCreateView.as_view(), name="list_persons"),
     path(
         "api_schema",
         get_schema_view(title="Form schema", description="API schema for Forms"),

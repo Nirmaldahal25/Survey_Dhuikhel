@@ -1,11 +1,23 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
-from forms.models import PersonsForm, PersonTrainings, EducationQualifications
-
+from rest_framework.generics import (
+    RetrieveUpdateDestroyAPIView,
+    ListCreateAPIView,
+)
 from rest_framework import status
-
-from forms.serializers import PersonsFormSerializer
+from forms.models import (
+    PersonsForm,
+    PersonTrainings,
+    EducationQualifications,
+    PersonalSkills,
+)
+from forms.mixins import MultipleFieldLookupMixin
+from forms.serializers import (
+    PersonsFormSerializer,
+    EducationQualificationsSerializer,
+    PersonTrainingsSerializer,
+    PersonSkillsSerializer,
+)
 
 
 class GenderView(APIView):
@@ -66,12 +78,12 @@ class CasteView(APIView):
 
 class PersonListCreateView(ListCreateAPIView):
     serializer_class = PersonsFormSerializer
+    queryset = PersonsForm.objects.all()
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super(PersonListCreateView, self).get_queryset()
         name = self.request.query_params.get("name")
         citizenship = self.request.query_params.get("citizenship")
-
         if name and citizenship:
             queryset = queryset.filter(name=name, citizenship=citizenship)
         return queryset
@@ -80,3 +92,39 @@ class PersonListCreateView(ListCreateAPIView):
 class PersonRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = PersonsFormSerializer
     queryset = PersonsForm.objects.all()
+
+
+class QualificationListCreateView(ListCreateAPIView):
+    queryset = EducationQualifications.objects.all()
+    serializer_class = EducationQualificationsSerializer
+    lookup_field = "person"
+
+
+class QualificationRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView):
+    queryset = EducationQualifications.objects.all()
+    serializer_class = EducationQualificationsSerializer
+    lookup_fields = ("person", "pk")
+
+
+class PersonsTrainingListCreateView(MultipleFieldLookupMixin, ListCreateAPIView):
+    queryset = PersonTrainings.objects.all()
+    serializer_class = PersonTrainingsSerializer
+    lookup_field = "person"
+
+
+class PersonsTrainingRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView):
+    queryset = PersonTrainings.objects.all()
+    serializer_class = PersonTrainingsSerializer
+    lookup_fields = ("person", "pk")
+
+
+class PersonSkillListCreateView(ListCreateAPIView):
+    queryset = PersonalSkills.objects.all()
+    serializer_class = PersonSkillsSerializer
+    lookup_field = "person"
+
+
+class PersonSkillRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView):
+    queryset = PersonalSkills.objects.all()
+    serializer_class = PersonSkillsSerializer
+    lookup_fields = ("person", "pk")

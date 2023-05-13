@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+import nepali_datetime
 
 
 class PersonsForm(models.Model):
@@ -93,6 +94,16 @@ class PersonsForm(models.Model):
     office_international = models.CharField(blank=True, null=True, max_length=400)
     mobile_number = models.PositiveIntegerField(null=False, blank=False)
 
+    @property
+    def age(self):
+        if not self.bday:
+            return 0
+        born = nepali_datetime.datetime.from_datetime_date(self.bday)
+        today = nepali_datetime.date.today()
+        return (
+            today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+        )
+
 
 class EducationQualifications(models.Model):
     QUALIFICATION = {
@@ -107,9 +118,6 @@ class EducationQualifications(models.Model):
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False
     )
     qualification = models.CharField(blank=False, null=False, max_length=200)
-
-    class Meta:
-        unique_together = ("person", "qualification")
 
 
 class PersonTrainings(models.Model):
