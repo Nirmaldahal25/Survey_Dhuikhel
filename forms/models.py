@@ -83,6 +83,7 @@ class PersonsForm(models.Model):
     gender = models.IntegerField(choices=GENDER, null=False, blank=False)
     permanent_address = models.IntegerField(choices=WODA, blank=False, null=False)
     temporary_address = models.CharField(blank=False, null=False, max_length=300)
+    email = models.EmailField(blank=True, null=True)
     citizenship = models.CharField(max_length=30, blank=True, null=True)
     bday = models.DateField(null=False, blank=False)
     fathers_name = models.CharField(blank=True, null=True, max_length=256)
