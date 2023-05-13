@@ -81,8 +81,9 @@ class PersonsForm(models.Model):
     }
     name = models.CharField(max_length=256, null=False, blank=False)
     gender = models.IntegerField(choices=GENDER, null=False, blank=False)
-    woda = models.IntegerField(choices=WODA, blank=False, null=False)
-    citizenship = models.CharField(max_length=30, blank=False, null=False)
+    permanent_address = models.IntegerField(choices=WODA, blank=False, null=False)
+    temporary_address = models.CharField(blank=False, null=False, max_length=300)
+    citizenship = models.CharField(max_length=30, blank=True, null=True)
     bday = models.DateField(null=False, blank=False)
     fathers_name = models.CharField(blank=True, null=True, max_length=256)
     mothers_name = models.CharField(blank=True, null=True, max_length=256)
@@ -93,6 +94,7 @@ class PersonsForm(models.Model):
     office_domestic = models.CharField(blank=True, null=True, max_length=400)
     office_international = models.CharField(blank=True, null=True, max_length=400)
     mobile_number = models.PositiveIntegerField(null=False, blank=False)
+    submitter_name = models.CharField(null=False, blank=True, max_length=400)
 
     @property
     def age(self):
