@@ -57,7 +57,7 @@ ROOT_URLCONF = "survey.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -119,7 +119,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-
+STATIC_ROOT = "static"
+STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -127,4 +128,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": ("rest_framework.schemas.coreapi.AutoSchema"),
+}
+
+
+JAZZMIN_SETTINGS = {
+    "custom_links": {
+        "forms": [
+            {
+                "name": "Data",
+                "url": "myadmin:analysis",
+                "icon": "fas fa-circle",
+            }
+        ]
+    }
 }

@@ -1,3 +1,4 @@
+from survey.admin import admin_site
 from django.contrib import admin
 from forms.models import (
     PersonsForm,
@@ -51,4 +52,4 @@ class PersonsFormAdmin(admin.ModelAdmin):
         return dat.strftime("%K-%n-%D")
 
 
-admin.site.register(PersonsForm, PersonsFormAdmin)
+admin_site.register(PersonsForm, PersonsFormAdmin)
