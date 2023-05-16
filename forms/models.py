@@ -118,6 +118,9 @@ class InterestedOccupation(models.Model):
     )
     interested_occupation = models.CharField(blank=True, null=True, max_length=400)
 
+    class Meta:
+        unique_together = ("person", "interested_occupation")
+
 
 class PersonTrainings(models.Model):
     TRAININGS = {
@@ -134,9 +137,15 @@ class PersonTrainings(models.Model):
     )
     training = models.CharField(blank=False, null=False, max_length=2000)
 
+    class Meta:
+        unique_together = ("person", "training")
+
 
 class PersonalSkills(models.Model):
     person = models.ForeignKey(
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False
     )
     skills = models.CharField(blank=False, null=False, max_length=2000)
+
+    class Meta:
+        unique_together = ("person", "skills")

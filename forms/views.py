@@ -268,13 +268,11 @@ class StatsView(TemplateView):
             "religion_name": [],
             "count": [],
         }
-        others = 0
         for key, value in religion.values_list("religion", "count"):
             if key:
                 religion_count["religion_name"].append(key)
                 religion_count["count"].append(value)
-            else:
-                others += int(value)
+        others = PersonsForm.objects.filter(religion=None).count()
 
         religion_count["religion_name"].append("अन्य")
         religion_count["count"].append(others)
@@ -284,29 +282,113 @@ class StatsView(TemplateView):
     def get_caste_report(self):
         caste = (
             PersonsForm.objects.values("caste")
-            .annotate(count=Count("religion"))
+            .annotate(count=Count("caste"))
             .order_by("-count")
         )
         caste_count = {
             "caste_name": [],
             "count": [],
         }
-        others = 0
         for key, value in caste.values_list("caste", "count"):
             if key:
                 caste_count["caste_name"].append(key)
                 caste_count["count"].append(value)
-            else:
-                others += int(value)
+
+        others = PersonsForm.objects.filter(caste=None).count()
         caste_count["caste_name"].append("अन्य")
         caste_count["count"].append(others)
         return caste_count
+
+    def get_occupation_report(self):
+        occupation = (
+            PersonsForm.objects.values("occupation")
+            .annotate(count=Count("occupation"))
+            .order_by("-count")
+        )
+        occupation_count = {
+            "occupation_name": [],
+            "count": [],
+        }
+        for key, value in occupation.values_list("occupation", "count"):
+            if key:
+                occupation_count["occupation_name"].append(key)
+                occupation_count["count"].append(value)
+        return occupation_count
+
+    def get_skills_report(self):
+        skills = (
+            PersonalSkills.objects.values("skills")
+            .annotate(count=Count("skills"))
+            .order_by("-count")
+        )
+        skills_count = {
+            "skill_name": [],
+            "count": [],
+        }
+        for key, value in skills.values_list("skills", "count"):
+            if key:
+                skills_count["skill_name"].append(key)
+                skills_count["count"].append(value)
+        return skills_count
+
+    def get_training_report(self):
+        trainings = (
+            PersonTrainings.objects.values("training")
+            .annotate(count=Count("training"))
+            .order_by("-count")
+        )
+        trainings_count = {
+            "training_name": [],
+            "count": [],
+        }
+        for key, value in trainings.values_list("training", "count"):
+            if key:
+                trainings_count["training_name"].append(key)
+                trainings_count["count"].append(value)
+        return trainings_count
+
+    def get_admired_occupation_report(self):
+        occupation = (
+            InterestedOccupation.objects.values("interested_occupation")
+            .annotate(count=Count("interested_occupation"))
+            .order_by("-count")
+        )
+        occupation_count = {
+            "occupation_name": [],
+            "count": [],
+        }
+        for key, value in occupation.values_list("interested_occupation", "count"):
+            if key:
+                occupation_count["occupation_name"].append(key)
+                occupation_count["count"].append(value)
+        return occupation_count
+
+    def get_qualification_report(self):
+        qualification = (
+            PersonsForm.objects.values("qualification")
+            .annotate(count=Count("qualification"))
+            .order_by("-count")
+        )
+        qualification_count = {
+            "qualification_name": [],
+            "count": [],
+        }
+        for key, value in qualification.values_list("qualification", "count"):
+            if key:
+                qualification_count["qualification_name"].append(key)
+                qualification_count["count"].append(value)
+        return qualification_count
 
     def get_context_data(self, request, **kwargs):
         genders_count = self.get_gender_report()
         woda_count = self.get_woda_report()
         religion_count = self.get_religion_report()
         caste_count = self.get_caste_report()
+        occupation_count = self.get_occupation_report()
+        skills_count = self.get_skills_report()
+        training_count = self.get_training_report()
+        adoccupation_count = self.get_admired_occupation_report()
+        qualification_count = self.get_qualification_report()
 
         self.extra_context = dict(
             self.model_admin.each_context(request),
@@ -314,6 +396,11 @@ class StatsView(TemplateView):
             woda_count=woda_count,
             religion_count=religion_count,
             caste_count=caste_count,
+            occupation_count=occupation_count,
+            skill_count=skills_count,
+            training_count=training_count,
+            adoccupation_count=adoccupation_count,
+            qualification_count=qualification_count,
         )
         return super().get_context_data(**kwargs)
 

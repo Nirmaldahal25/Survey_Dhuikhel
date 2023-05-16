@@ -57,6 +57,74 @@ Survey Report
                 ब्राम्हण/क्षत्री, जनजाती, दलित, अल्पसंख्यक, अन्य
             </div>
         </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+            पेशा
+            </div>
+            <div class="card-body">
+                <div class="occupation-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                सरकारी सेवा करार, सरकारी सेवा स्थायी,शिक्षण सरकारी, शिक्षण प्राइभेट, प्राइभेट नोकरी, बैंक, विमा, सहकारी संस्था, होटल व्यवसायी, आफ्नै व्यवसायी, कुनै पेशा रोजगारमा संलग्न नरहेको
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+            ईच्छाइएको पेशाहरू
+            </div>
+            <div class="card-body">
+                <div class="adoccupation-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                कृषि तथा पशुपालन,
+                पर्यटन व्यवसाय(होमस्टे, होटल व्यवसाय),
+                गित, संगीत र साहित्य सम्बन्धी,
+                खेलकुद सम्बन्धी,
+                साना तथा घरेलु उधोग,
+                सरकारी सेवा
+            </div>
+        </div>
+
+
+        <div class="card text-center">
+            <div class="card-header">
+            सिप
+            </div>
+            <div class="card-body">
+                <div class="skill-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                ...
+            </div>
+        </div>
+
+
+        <div class="card text-center">
+            <div class="card-header">
+            लिन ईच्छाइएको तालिमहरू
+            </div>
+            <div class="card-body">
+                <div class="training-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+            कृषि तथा पशुपालन सम्बन्धी तालिम, पर्यटन व्यवसाय(होमस्टे, होटल व्यवसाय) सम्बन्धी तालिम, साना तथा घरेलु उधोग संचालन सम्बन्धी तालिम, सरकारी सेवा तयारी तालिम, गित, संगीत र साहित्य सम्बन्धी तालिम, खेलकुद सम्बन्धी तालिम, 
+        सकरात्मक सोच तथा सचेतनात्मक सोच सम्बन्धी अभिमुखिकरण तालिम
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+            शैक्षिक योग्यता
+            </div>
+            <div class="card-body">
+                <div class="qualification-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                ...
+            </div>
+        </div>
     </div>
     
 
@@ -75,18 +143,49 @@ Survey Report
             labels : ["१","२","३","४","५","६","७","८","९","१०","११","१२"],
             series : [[{% for key,value in woda_count.items %} {{ value }},{% endfor %}]],
         };
-        var gender = new Chartist.Bar('.woda-chart', wodaData, options);
+        var woda = new Chartist.Bar('.woda-chart', wodaData, options);
 
         var religionData = { 
             labels : [{% for value in religion_count.religion_name %} '{{ value }}',{% endfor %}],
             series : [[{% for value in religion_count.count %} {{ value }},{% endfor %}]],
         };
-        var gender = new Chartist.Bar('.religion-chart', religionData, options);
+        var religion = new Chartist.Bar('.religion-chart', religionData, options);
 
         var casteData = { 
             labels : [{% for value in caste_count.caste_name %} '{{ value }}',{% endfor %}],
             series : [[{% for value in caste_count.count %} {{ value }},{% endfor %}]],
         };
-        var gender = new Chartist.Bar('.caste-chart', casteData, options);
+        var caste = new Chartist.Bar('.caste-chart', casteData, options);
+
+        var occupationsData = { 
+            labels : [{% for value in occupation_count.occupation_name %} '{{ value }}',{% endfor %}],
+            series : [[{% for value in occupation_count.count %} {{ value }},{% endfor %}]],
+        };
+        var occupation = new Chartist.Bar('.occupation-chart', occupationsData, options);
+
+        var adoccupationsData = { 
+            labels : [{% for value in adoccupation_count.occupation_name %} '{{ value }}',{% endfor %}],
+            series : [[{% for value in adoccupation_count.count %} {{ value }},{% endfor %}]],
+        };
+        var adoccupation = new Chartist.Bar('.adoccupation-chart', adoccupationsData, options);
+
+        var skillsData = { 
+            labels : [{% for value in skill_count.skill_name %} '{{ value }}',{% endfor %}],
+            series : [[{% for value in skill_count.count %} {{ value }},{% endfor %}]],
+        };
+        var skill = new Chartist.Bar('.skill-chart', skillsData, options);
+
+
+        var trainingsData = { 
+            labels : [{% for value in skill_count.training_name %} '{{ value }}',{% endfor %}],
+            series : [[{% for value in skill_count.count %} {{ value }},{% endfor %}]],
+        };
+        var training = new Chartist.Bar('.training-chart', trainingsData, options);
+
+        var qualificationsData = { 
+            labels : [{% for value in qualification_count.qualification_name %} '{{ value }}',{% endfor %}],
+            series : [[{% for value in qualification_count.count %} {{ value }},{% endfor %}]],
+        };
+        var qualification = new Chartist.Bar('.qualification-chart', qualificationsData, options);
     </script>
 {% endblock %}
