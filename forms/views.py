@@ -9,13 +9,13 @@ from django.db.models import Count
 from forms.models import (
     PersonsForm,
     PersonTrainings,
-    EducationQualifications,
+    InterestedOccupation,
     PersonalSkills,
 )
 from forms.mixins import MultipleFieldLookupMixin
 from forms.serializers import (
     PersonsFormSerializer,
-    EducationQualificationsSerializer,
+    InterestedOccupationsSerializer,
     PersonTrainingsSerializer,
     PersonSkillsSerializer,
 )
@@ -56,7 +56,7 @@ class ReligionView(APIView):
 
 class QualificationsView(APIView):
     def get(self, request, format=None):
-        qualifications_dict = EducationQualifications.QUALIFICATION
+        qualifications_dict = PersonsForm.QUALIFICATION
         return Response(data=qualifications_dict, status=status.HTTP_200_OK)
 
 
@@ -68,7 +68,7 @@ class OccupationsView(APIView):
 
 class AdmiredOccuptionView(APIView):
     def get(self, request, format=None):
-        ad_occupations_dict = PersonsForm.ADMIRED_OCCUPATION
+        ad_occupations_dict = InterestedOccupation.ADMIRED_OCCUPATION
         return Response(data=ad_occupations_dict, status=status.HTTP_200_OK)
 
 
@@ -96,15 +96,17 @@ class PersonRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = PersonsForm.objects.all()
 
 
-class QualificationListCreateView(ListCreateAPIView):
-    queryset = EducationQualifications.objects.all()
-    serializer_class = EducationQualificationsSerializer
+class InterestedOccupationListCreateView(ListCreateAPIView):
+    queryset = InterestedOccupation.objects.all()
+    serializer_class = InterestedOccupationsSerializer
     lookup_field = "person"
 
 
-class QualificationRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView):
-    queryset = EducationQualifications.objects.all()
-    serializer_class = EducationQualificationsSerializer
+class InterestedOccupationRUDView(
+    MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView
+):
+    queryset = InterestedOccupation.objects.all()
+    serializer_class = InterestedOccupationsSerializer
     lookup_fields = ("person", "pk")
 
 

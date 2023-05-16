@@ -63,15 +63,15 @@ class PersonsForm(models.Model):
         12: "अन्य",
     }
 
-    ADMIRED_OCCUPATION = {
-        1: "कृषि तथा पशुपालन",
-        2: "पर्यटन व्यवसाय(होमस्टे, होटल व्यवसाय)",
-        3: "गित, संगीत र साहित्य सम्बन्धी",
-        4: "खेलकुद सम्बन्धी",
-        5: "साना तथा घरेलु उधोग",
-        6: "सरकारी सेवा",
-        7: "अन्य",
+    QUALIFICATION = {
+        1: "आधारभुत तह",
+        2: "एस.एल.सी./एस.ई.ई",
+        3: "१०‌‌‍‍‌‌‍‍‍‌‌‌‌‌‌‌‌‌+२",
+        4: "स्नातक",
+        5: "स्नाकोत्तर",
+        6: "अन्य",
     }
+
     CASTE = {
         1: "ब्राम्हण/क्षत्री",
         2: "जनजाती",
@@ -91,7 +91,7 @@ class PersonsForm(models.Model):
     religion = models.CharField(blank=True, null=True, max_length=100)
     caste = models.CharField(blank=True, null=True, max_length=100)
     occupation = models.CharField(blank=False, null=False, max_length=200)
-    interested_occupation = models.CharField(blank=True, null=True, max_length=400)
+    qualification = models.CharField(blank=False, null=False, max_length=200)
     office_domestic = models.CharField(blank=True, null=True, max_length=400)
     office_international = models.CharField(blank=True, null=True, max_length=400)
     mobile_number = models.PositiveIntegerField(null=False, blank=False)
@@ -108,19 +108,20 @@ class PersonsForm(models.Model):
         )
 
 
-class EducationQualifications(models.Model):
-    QUALIFICATION = {
-        1: "आधारभुत तह",
-        2: "एस.एल.सी./एस.ई.ई",
-        3: "१०‌‌‍‍‌‌‍‍‍‌‌‌‌‌‌‌‌‌+२",
-        4: "स्नातक",
-        5: "स्नाकोत्तर",
-        6: "अन्य",
+class InterestedOccupation(models.Model):
+    ADMIRED_OCCUPATION = {
+        1: "कृषि तथा पशुपालन",
+        2: "पर्यटन व्यवसाय(होमस्टे, होटल व्यवसाय)",
+        3: "गित, संगीत र साहित्य सम्बन्धी",
+        4: "खेलकुद सम्बन्धी",
+        5: "साना तथा घरेलु उधोग",
+        6: "सरकारी सेवा",
+        7: "अन्य",
     }
     person = models.ForeignKey(
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False
     )
-    qualification = models.CharField(blank=False, null=False, max_length=200)
+    interested_occupation = models.CharField(blank=True, null=True, max_length=400)
 
 
 class PersonTrainings(models.Model):

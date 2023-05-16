@@ -14,10 +14,10 @@ from forms.views import (
     PersonRetrieveUpdateDeleteView,
     # List Create Views
     PersonsTrainingListCreateView,
-    QualificationListCreateView,
+    InterestedOccupationListCreateView,
     PersonSkillListCreateView,
     # Retrieve Update Delete Views
-    QualificationRUDView,
+    InterestedOccupationRUDView,
     PersonSkillRUDView,
     PersonsTrainingRUDView,
 )
@@ -44,7 +44,7 @@ urlpatterns = [
     ),
     path(
         "persons/<int:person>/qualifications/<int:pk>/",
-        view=QualificationRUDView.as_view(),
+        view=InterestedOccupationRUDView.as_view(),
         name="rud_person_qualifications",
     ),
     path(
@@ -59,7 +59,7 @@ urlpatterns = [
     ),
     path(
         "persons/<int:person>/qualifications/",
-        view=QualificationListCreateView.as_view(),
+        view=InterestedOccupationListCreateView.as_view(),
         name="list_person_qualifications",
     ),
     path(

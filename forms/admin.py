@@ -2,7 +2,7 @@ from survey.admin import admin_site
 from django.contrib import admin
 from forms.models import (
     PersonsForm,
-    EducationQualifications,
+    InterestedOccupation,
     PersonTrainings,
     PersonalSkills,
 )
@@ -24,10 +24,10 @@ class PersonTrainingsInline(admin.TabularInline):
 
 
 class EducationQualificationsInline(admin.TabularInline):
-    model = EducationQualifications
-    verbose_name = "qualification"
+    model = InterestedOccupation
+    verbose_name = "Intrested Occupation"
     can_delete = False
-    readonly_fields = ("qualification",)
+    readonly_fields = ("interested_occupation",)
 
 
 # Register your models here.

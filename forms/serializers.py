@@ -2,14 +2,14 @@ from rest_framework import serializers
 from forms.models import (
     PersonsForm,
     PersonalSkills,
-    EducationQualifications,
+    InterestedOccupation,
     PersonTrainings,
 )
 
 
-class EducationQualificationsSerializer(serializers.ModelSerializer):
+class InterestedOccupationsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EducationQualifications
+        model = InterestedOccupation
         fields = "__all__"
 
 
@@ -28,10 +28,10 @@ class PersonSkillsSerializer(serializers.ModelSerializer):
 class PersonsFormSerializer(serializers.ModelSerializer):
     skills = PersonSkillsSerializer(read_only=True, many=True)
     trainings = PersonTrainingsSerializer(read_only=True, many=True)
-    qualifications = EducationQualificationsSerializer(read_only=True, many=True)
+    interest_occupations = InterestedOccupationsSerializer(read_only=True, many=True)
     age = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = PersonsForm
         fields = "__all__"
-        extra_fields = ("skills", "trainings", "qualifications", "age")
+        extra_fields = ("skills", "trainings", "nterest_occupations", "age")
