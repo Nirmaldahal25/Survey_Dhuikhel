@@ -9,6 +9,7 @@ from forms.views import (
     CasteView,
     OccupationsView,
     AdmiredOccuptionView,
+    PersonalSkillsView,
     # Person Views
     PersonListCreateView,
     PersonRetrieveUpdateDeleteView,
@@ -37,6 +38,7 @@ urlpatterns = [
     path("list/religions/", view=ReligionView.as_view(), name="list_religions"),
     path("list/castes/", view=CasteView.as_view(), name="list_castes"),
     path("list/occupations/", view=OccupationsView.as_view(), name="list_occupations"),
+    path("list/skills/", view=PersonalSkillsView.as_view(), name="list_skills"),
     path(
         "list/admiredoccupations/",
         view=AdmiredOccuptionView.as_view(),

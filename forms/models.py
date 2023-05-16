@@ -45,7 +45,6 @@ class PersonsForm(models.Model):
         2: "बौद्व",
         3: "क्रिस्चियन",
         4: "मुस्लिम",
-        5: "अन्य",
     }
 
     OCCUPATION = {
@@ -60,7 +59,6 @@ class PersonsForm(models.Model):
         9: "होटल व्यवसायी",
         10: "आफ्नै व्यवसायी",
         11: "कुनै पेशा रोजगारमा संलग्न नरहेको",
-        12: "अन्य",
     }
 
     QUALIFICATION = {
@@ -69,7 +67,6 @@ class PersonsForm(models.Model):
         3: "१०‌‌‍‍‌‌‍‍‍‌‌‌‌‌‌‌‌‌+२",
         4: "स्नातक",
         5: "स्नाकोत्तर",
-        6: "अन्य",
     }
 
     CASTE = {
@@ -77,7 +74,6 @@ class PersonsForm(models.Model):
         2: "जनजाती",
         3: "दलित",
         4: "अल्पसंख्यक",
-        5: "अन्य",
     }
     name = models.CharField(max_length=256, null=False, blank=False)
     gender = models.IntegerField(choices=GENDER, null=False, blank=False)
@@ -116,7 +112,6 @@ class InterestedOccupation(models.Model):
         4: "खेलकुद सम्बन्धी",
         5: "साना तथा घरेलु उधोग",
         6: "सरकारी सेवा",
-        7: "अन्य",
     }
     person = models.ForeignKey(
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False
@@ -133,7 +128,6 @@ class PersonTrainings(models.Model):
         5: "गित, संगीत र साहित्य सम्बन्धी तालिम",
         6: "खेलकुद सम्बन्धी तालिम",
         7: "सकरात्मक सोच तथा सचेतनात्मक सोच सम्बन्धी अभिमुखिकरण तालिम",
-        8: "अन्य",
     }
     person = models.ForeignKey(
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False

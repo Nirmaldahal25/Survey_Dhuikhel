@@ -32,11 +32,33 @@ Survey Report
                 वोडा नं १, २, ३, ४, ५, ६, ७, ८, ९, १०, ११, १२
             </div>
         </div>
-    </div>
-    <div class="container">
-        <p>This block for Caste</p>
-    </div>
 
+
+        <div class="card text-center">
+            <div class="card-header">
+            धर्म
+            </div>
+            <div class="card-body">
+                <div class="religion-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                हिन्दु, बौद्व, क्रिस्चियन, मुस्लिम, अन्य
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+            जात
+            </div>
+            <div class="card-body">
+                <div class="caste-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                ब्राम्हण/क्षत्री, जनजाती, दलित, अल्पसंख्यक, अन्य
+            </div>
+        </div>
+    </div>
+    
 
     <script type="text/javascript">
         var genderData = { 
@@ -54,5 +76,17 @@ Survey Report
             series : [[{% for key,value in woda_count.items %} {{ value }},{% endfor %}]],
         };
         var gender = new Chartist.Bar('.woda-chart', wodaData, options);
+
+        var religionData = { 
+            labels : [{% for value in religion_count.religion_name %} '{{ value }}',{% endfor %}],
+            series : [[{% for value in religion_count.count %} {{ value }},{% endfor %}]],
+        };
+        var gender = new Chartist.Bar('.religion-chart', religionData, options);
+
+        var casteData = { 
+            labels : [{% for value in caste_count.caste_name %} '{{ value }}',{% endfor %}],
+            series : [[{% for value in caste_count.count %} {{ value }},{% endfor %}]],
+        };
+        var gender = new Chartist.Bar('.caste-chart', casteData, options);
     </script>
 {% endblock %}
