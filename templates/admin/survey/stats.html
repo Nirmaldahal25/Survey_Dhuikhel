@@ -7,5 +7,52 @@ Survey Report
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'chartist/chartist.min.css' %}">
-    <script src="{% static 'chartist/chartist.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'chartist/chartist.min.js' %}"></script>
+    <div class="container-fluid">
+        <div class="card text-center">
+            <div class="card-header">
+            लि‌ङ्ग
+            </div>
+            <div class="card-body">
+                <div class="gender-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                १. महिला, २. पुरुष, ३. अन्य
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+            स्थायी बसोबास
+            </div>
+            <div class="card-body">
+                <div class="woda-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                वोडा नं १, २, ३, ४, ५, ६, ७, ८, ९, १०, ११, १२
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <p>This block for Caste</p>
+    </div>
+
+
+    <script type="text/javascript">
+        var genderData = { 
+            labels : ["महिला","पुरुष", "अन्य"],
+            series : [[{% for key,value in genders_count.items %} {{ value }},{% endfor %}]],
+        };
+        var options = {
+            seriesBarDistance: 10
+        };
+        var gender = new Chartist.Bar('.gender-chart', genderData, options);
+
+
+        var wodaData = { 
+            labels : ["१","२","३","४","५","६","७","८","९","१०","११","१२"],
+            series : [[{% for key,value in woda_count.items %} {{ value }},{% endfor %}]],
+        };
+        var gender = new Chartist.Bar('.woda-chart', wodaData, options);
+    </script>
 {% endblock %}

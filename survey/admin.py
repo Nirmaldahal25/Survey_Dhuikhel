@@ -3,6 +3,7 @@ from django.urls import path
 from django.template.response import TemplateResponse
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from forms.views import StatsView
 
 
 class AdminSite(admin.AdminSite):
@@ -11,15 +12,11 @@ class AdminSite(admin.AdminSite):
         my_urls = [
             path(
                 "forms/analysis/",
-                self.admin_view(self.stastics_view),
+                self.admin_view(StatsView.as_view(model_admin=self)),
                 name="analysis",
-            )
+            ),
         ]
         return my_urls + urls
-
-    def stastics_view(self, request, *args, **kwargs):
-        context = dict(self.each_context(request), user=request.user)
-        return TemplateResponse(request, "admin/survey/stats.html", context)
 
 
 admin_site = AdminSite(name="myadmin")

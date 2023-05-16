@@ -5,6 +5,7 @@ from rest_framework.generics import (
     ListCreateAPIView,
 )
 from rest_framework import status
+from django.db.models import Count
 from forms.models import (
     PersonsForm,
     PersonTrainings,
@@ -18,6 +19,7 @@ from forms.serializers import (
     PersonTrainingsSerializer,
     PersonSkillsSerializer,
 )
+from django.views.generic import TemplateView
 
 
 class GenderView(APIView):
@@ -128,3 +130,60 @@ class PersonSkillRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView)
     queryset = PersonalSkills.objects.all()
     serializer_class = PersonSkillsSerializer
     lookup_fields = ("person", "pk")
+
+
+class StatsView(TemplateView):
+    template_name = "admin/survey/stats.html"
+    model_admin = None
+
+    def get_gender_report(self):
+        gender = (
+            PersonsForm.objects.values("gender")
+            .annotate(count=Count("gender"))
+            .order_by("gender")
+        )
+        genders_count = {1: 0, 2: 0, 3: 0}
+        for key, value in gender.values_list("gender", "count"):
+            genders_count[key] = value
+
+        return genders_count
+
+    def get_woda_report(self):
+        woda = (
+            PersonsForm.objects.values("permanent_address")
+            .annotate(count=Count("permanent_address"))
+            .order_by("permanent_address")
+        )
+        woda_count = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+            10: 0,
+            11: 0,
+            12: 0,
+        }
+
+        for key, value in woda.values_list("permanent_address", "count"):
+            woda_count[key] = value
+        return woda_count
+
+    def get_context_data(self, request, **kwargs):
+        genders_count = self.get_gender_report()
+        woda_count = self.get_woda_report()
+
+        self.extra_context = dict(
+            self.model_admin.each_context(request),
+            genders_count=genders_count,
+            woda_count=woda_count,
+        )
+        return super().get_context_data(**kwargs)
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(request=request, **kwargs)
+        return self.render_to_response(context)
