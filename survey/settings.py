@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-+nx#0araq61co!r56^z7!gs6-j&2=_%*lny(n$9zw$dt&x!til"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*","10.0.2.2"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -122,6 +122,9 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = "static"
 STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = "media"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -159,7 +162,7 @@ JAZZMIN_SETTINGS = {
     "site_title": "धुलिखेल युवा परिषद",
     "site_logo": "Logo\dhulikhellogo.png",
     "copyright": "yuwaparishad",
-    "welcome_sign":"धुलिखेल युवा परिषद",
+    "welcome_sign": "धुलिखेल युवा परिषद",
     "site_logo_classes": "img-circle",
     "show_ui_builder": True,
     "custom_links": {
@@ -201,6 +204,6 @@ JAZZMIN_UI_TWEAKS = {
         "info": "btn-info",
         "warning": "btn-warning",
         "danger": "btn-danger",
-        "success": "btn-success"
+        "success": "btn-success",
     },
 }
