@@ -2,6 +2,12 @@ from django.db import models
 
 # Create your models here.
 import nepali_datetime
+from django.contrib.auth.models import User
+from forms.storage import OverwriteStorage
+
+
+def save_user_photo(instance, filename):
+    return f"{instance.submitter.username}/{instance.mobile_number}/{filename}"
 
 
 class PersonsForm(models.Model):
@@ -91,7 +97,10 @@ class PersonsForm(models.Model):
     office_domestic = models.CharField(blank=True, null=True, max_length=400)
     office_international = models.CharField(blank=True, null=True, max_length=400)
     mobile_number = models.PositiveIntegerField(null=False, blank=False)
-    submitter_name = models.CharField(null=False, blank=True, max_length=400)
+    submitter = models.ForeignKey(User, null=False, blank=False)
+    photo = models.ImageField(
+        null=True, blank=True, upload_to=save_user_photo, storage=OverwriteStorage()
+    )
 
     @property
     def age(self):

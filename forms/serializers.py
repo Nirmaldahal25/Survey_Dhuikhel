@@ -34,4 +34,4 @@ class PersonsFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = PersonsForm
         fields = "__all__"
-        extra_fields = ("skills", "trainings", "nterest_occupations", "age")
+        extra_fields = ("skills", "trainings", "interest_occupations", "age")

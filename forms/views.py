@@ -5,6 +5,7 @@ from rest_framework.generics import (
     ListCreateAPIView,
 )
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from django.db.models import Count
 from forms.models import (
     PersonsForm,
@@ -162,6 +163,9 @@ class CasteView(APIView):
 
 
 class PersonListCreateView(ListCreateAPIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     serializer_class = PersonsFormSerializer
     queryset = PersonsForm.objects.all()
 
@@ -175,11 +179,17 @@ class PersonListCreateView(ListCreateAPIView):
 
 
 class PersonRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     serializer_class = PersonsFormSerializer
     queryset = PersonsForm.objects.all()
 
 
 class InterestedOccupationListCreateView(ListCreateAPIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     queryset = InterestedOccupation.objects.all()
     serializer_class = InterestedOccupationsSerializer
     lookup_field = "person"
@@ -188,36 +198,54 @@ class InterestedOccupationListCreateView(ListCreateAPIView):
 class InterestedOccupationRUDView(
     MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView
 ):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     queryset = InterestedOccupation.objects.all()
     serializer_class = InterestedOccupationsSerializer
     lookup_fields = ("person", "pk")
 
 
 class PersonsTrainingListCreateView(MultipleFieldLookupMixin, ListCreateAPIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     queryset = PersonTrainings.objects.all()
     serializer_class = PersonTrainingsSerializer
     lookup_field = "person"
 
 
 class PersonsTrainingRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     queryset = PersonTrainings.objects.all()
     serializer_class = PersonTrainingsSerializer
     lookup_fields = ("person", "pk")
 
 
 class PersonSkillListCreateView(ListCreateAPIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     queryset = PersonalSkills.objects.all()
     serializer_class = PersonSkillsSerializer
     lookup_field = "person"
 
 
 class PersonSkillRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     queryset = PersonalSkills.objects.all()
     serializer_class = PersonSkillsSerializer
     lookup_fields = ("person", "pk")
 
 
 class StatsView(TemplateView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
     template_name = "admin/survey/stats.html"
     model_admin = None
 

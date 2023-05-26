@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path
-from django.template.response import TemplateResponse
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from forms.views import StatsView
+
+from rest_framework.authtoken.models import Token
 
 
 class AdminSite(admin.AdminSite):
@@ -21,3 +22,4 @@ class AdminSite(admin.AdminSite):
 
 admin_site = AdminSite(name="myadmin")
 admin_site.register(User, UserAdmin)
+admin_site.register(Token)
