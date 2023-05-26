@@ -467,14 +467,14 @@ class StatementView(APIView):
     def get_gender(value):
         for gend in PersonsForm.GENDER:
             if value in gend:
-                return value[1]
+                return gend[1]
         return PersonsForm.GENDER[0][1]
 
     @staticmethod
     def get_woda(value):
         for wod in PersonsForm.WODA:
             if value in wod:
-                return value[1]
+                return wod[1]
         return PersonsForm.WODA[0][1]
 
     @staticmethod
@@ -512,11 +512,12 @@ class StatementView(APIView):
         )
         writer = csv.writer(response)
         writer.writerow(headers)
+        
         for person in queryset:
-            occupation = person.occupation_set.all().values("occupation")
-            skills = person.personalskills_set.all().values("skills")
-            training = person.persontrainings_set.all().values("training")
-            i_occupation = person.interestedoccupation_set.all().values(
+            occupation = person.occupation_set.all().values_list("occupation")
+            skills = person.personalskills_set.all().values_list("skills")
+            training = person.persontrainings_set.all().values_list("training")
+            i_occupation = person.interestedoccupation_set.all().values_list(
                 "interested_occupation"
             )
             person_list = [
@@ -524,27 +525,29 @@ class StatementView(APIView):
                 StatementView.get_gender(person.gender),
                 StatementView.get_woda(person.permanent_address),
                 person.temporary_address,
-                getattr(person, "email", default=""),
-                getattr(person, "citizenship", default=""),
+                getattr(person, "email", " "),
+                getattr(person, "citizenship", " "),
                 StatementView.nepali_date(person.bday),
                 person.age,
-                getattr(person, "fathers_name", default=""),
-                getattr(person, "mothers_name", default=""),
-                getattr(person, "religion", default=""),
-                getattr(person, "caste", default=""),
+                getattr(person, "fathers_name", ""),
+                getattr(person, "mothers_name", ""),
+                getattr(person, "religion", ""),
+                getattr(person, "caste", ""),
                 person.qualification,
-                getattr(person, "office_domestic", default=""),
-                getattr(person, "office_international", default=""),
+                getattr(person, "office_domestic", ""),
+                getattr(person, "office_international", ""),
                 person.mobile_number,
             ]
             iterate = zip_longest(
-                [[[person_list]], occupation, skills, training, i_occupation],
-                fillvalue="",
+                [person_list, occupation, skills, training, i_occupation],
+                fillvalue = " ",
             )
             for info in iterate:
                 row = list()
+                print(info)
                 if info[0]:
-                    row = [info[0], info[1], info[2], info[3], info[4]]
+                    row = [i for i in info[0]]
+                    row.extend([info[1], info[2], info[3], info[4]])
                 else:
                     row = ["" for _ in range(16)]
                     other = [info[1], info[2], info[3], info[4]]
@@ -561,7 +564,7 @@ class UserIdView(APIView):
     def get(get, request, format=None):
         if request and request.user:
             user = request.user
-            return Response({"id": user.id}, status=status.HTTP_200_OK)
+            return Response({"id": user.id,"name": user.first_name + " " + user.last_name}, status=status.HTTP_200_OK)
         return Response(
             {"error": "user not found"}, status=status.HTTP_401_UNAUTHORIZED
         )
