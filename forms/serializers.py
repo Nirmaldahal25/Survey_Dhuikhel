@@ -4,6 +4,7 @@ from forms.models import (
     PersonalSkills,
     InterestedOccupation,
     PersonTrainings,
+    Occupation,
 )
 
 
@@ -22,6 +23,12 @@ class PersonTrainingsSerializer(serializers.ModelSerializer):
 class PersonSkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PersonalSkills
+        fields = "__all__"
+
+
+class OccupationSerializer(serializers.Serializer):
+    class Meta:
+        model = Occupation
         fields = "__all__"
 
 

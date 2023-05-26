@@ -5,6 +5,7 @@ from forms.models import (
     InterestedOccupation,
     PersonTrainings,
     PersonalSkills,
+    Occupation,
 )
 import nepali_datetime
 
@@ -30,6 +31,13 @@ class EducationQualificationsInline(admin.TabularInline):
     readonly_fields = ("interested_occupation",)
 
 
+class OccupationsInline(admin.TabularInline):
+    model = Occupation
+    verbose_name = "Occupation"
+    can_delete = False
+    readonly_fields = ("occupation",)
+
+
 # Register your models here.
 class PersonsFormAdmin(admin.ModelAdmin):
     model = PersonsForm
@@ -37,6 +45,7 @@ class PersonsFormAdmin(admin.ModelAdmin):
         EducationQualificationsInline,
         PersonTrainingsInline,
         PersonalSkillsInline,
+        OccupationsInline,
     ]
     search_fields = ("name", "citizenship", "email", "mobile_number")
     readonly_fields = ["age"]

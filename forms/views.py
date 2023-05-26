@@ -12,6 +12,7 @@ from forms.models import (
     PersonTrainings,
     InterestedOccupation,
     PersonalSkills,
+    Occupation,
 )
 from forms.mixins import MultipleFieldLookupMixin
 from forms.serializers import (
@@ -19,6 +20,7 @@ from forms.serializers import (
     InterestedOccupationsSerializer,
     PersonTrainingsSerializer,
     PersonSkillsSerializer,
+    OccupationSerializer,
 )
 from django.views.generic import TemplateView
 
@@ -98,14 +100,14 @@ class QualificationsView(APIView):
 
 class OccupationsView(APIView):
     def get(self, request, format=None):
-        occupations_dict = PersonsForm.OCCUPATION.copy()
+        occupations_dict = Occupation.OCCUPATION.copy()
         occupations = (
-            PersonsForm.objects.all()
+            Occupation.objects.all()
             .exclude(occupation__in=list(occupations_dict.values()))
             .values("occupation")
             .distinct()
         )
-        data = len(PersonsForm.OCCUPATION)
+        data = len(Occupation.OCCUPATION)
         for value in occupations.values_list("occupation"):
             data += 1
             occupations_dict[data] = value[0]
@@ -242,10 +244,25 @@ class PersonSkillRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView)
     lookup_fields = ("person", "pk")
 
 
-class StatsView(TemplateView):
+class OccupationListCreateView(ListCreateAPIView):
     permission_classes = [
         IsAuthenticated,
     ]
+    queryset = Occupation.objects.all()
+    serializer_class = OccupationSerializer
+    lookup_field = "person"
+
+
+class OccupationRUDView(MultipleFieldLookupMixin, RetrieveUpdateDestroyAPIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
+    queryset = Occupation.objects.all()
+    serializer_class = OccupationSerializer
+    lookup_fields = ("person", "pk")
+
+
+class StatsView(TemplateView):
     template_name = "admin/survey/stats.html"
     model_admin = None
 

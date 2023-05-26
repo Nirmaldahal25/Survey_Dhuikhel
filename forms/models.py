@@ -53,20 +53,6 @@ class PersonsForm(models.Model):
         4: "मुस्लिम",
     }
 
-    OCCUPATION = {
-        1: "सरकारी सेवा करार",
-        2: "सरकारी सेवा स्थायी",
-        3: "शिक्षण सरकारी",
-        4: "शिक्षण प्राइभेट",
-        5: "प्राइभेट नोकरी",
-        6: "बैंक",
-        7: "विमा",
-        8: "सहकारी संस्था",
-        9: "होटल व्यवसायी",
-        10: "आफ्नै व्यवसायी",
-        11: "कुनै पेशा रोजगारमा संलग्न नरहेको",
-    }
-
     QUALIFICATION = {
         1: "आधारभुत तह",
         2: "एस.एल.सी./एस.ई.ई",
@@ -92,7 +78,6 @@ class PersonsForm(models.Model):
     mothers_name = models.CharField(blank=True, null=True, max_length=256)
     religion = models.CharField(blank=True, null=True, max_length=100)
     caste = models.CharField(blank=True, null=True, max_length=100)
-    occupation = models.CharField(blank=False, null=False, max_length=200)
     qualification = models.CharField(blank=False, null=False, max_length=200)
     office_domestic = models.CharField(blank=True, null=True, max_length=400)
     office_international = models.CharField(blank=True, null=True, max_length=400)
@@ -160,3 +145,26 @@ class PersonalSkills(models.Model):
 
     class Meta:
         unique_together = ("person", "skills")
+
+
+class Occupation(models.Model):
+    OCCUPATION = {
+        1: "सरकारी सेवा करार",
+        2: "सरकारी सेवा स्थायी",
+        3: "शिक्षण सरकारी",
+        4: "शिक्षण प्राइभेट",
+        5: "प्राइभेट नोकरी",
+        6: "बैंक",
+        7: "विमा",
+        8: "सहकारी संस्था",
+        9: "होटल व्यवसायी",
+        10: "आफ्नै व्यवसायी",
+        11: "कुनै पेशा रोजगारमा संलग्न नरहेको",
+    }
+    occupation = models.CharField(blank=False, null=False, max_length=300)
+    person = models.ForeignKey(
+        PersonsForm, on_delete=models.CASCADE, null=False, blank=False
+    )
+
+    class Meta:
+        unique_together = ("person", "occupation")

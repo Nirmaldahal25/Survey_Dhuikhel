@@ -17,10 +17,12 @@ from forms.views import (
     PersonsTrainingListCreateView,
     InterestedOccupationListCreateView,
     PersonSkillListCreateView,
+    OccupationListCreateView,
     # Retrieve Update Delete Views
     InterestedOccupationRUDView,
     PersonSkillRUDView,
     PersonsTrainingRUDView,
+    OccupationRUDView,
     # Get User
     UserIdView,
 )
@@ -63,6 +65,11 @@ urlpatterns = [
         name="rud_person_trainings",
     ),
     path(
+        "persons/<int:person>/occupations/<int:pk>/",
+        view=OccupationRUDView.as_view(),
+        name="rud_person_occupations",
+    ),
+    path(
         "persons/<int:person>/qualifications/",
         view=InterestedOccupationListCreateView.as_view(),
         name="list_person_qualifications",
@@ -76,6 +83,11 @@ urlpatterns = [
         "persons/<int:person>/trainings/",
         view=PersonsTrainingListCreateView.as_view(),
         name="list_persons_training",
+    ),
+    path(
+        "persons/<int:person>/occupations/",
+        view=OccupationListCreateView.as_view(),
+        name="list_persons_occupations",
     ),
     path(
         "persons/<int:pk>/",
