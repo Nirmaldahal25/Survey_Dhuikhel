@@ -97,7 +97,9 @@ class PersonsForm(models.Model):
     office_domestic = models.CharField(blank=True, null=True, max_length=400)
     office_international = models.CharField(blank=True, null=True, max_length=400)
     mobile_number = models.PositiveIntegerField(null=False, blank=False)
-    submitter = models.ForeignKey(User, null=False, blank=False)
+    submitter = models.ForeignKey(
+        User, null=False, blank=False, on_delete=models.DO_NOTHING
+    )
     photo = models.ImageField(
         null=True, blank=True, upload_to=save_user_photo, storage=OverwriteStorage()
     )

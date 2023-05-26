@@ -40,7 +40,18 @@ class PersonsFormAdmin(admin.ModelAdmin):
     ]
     search_fields = ("name", "citizenship", "email", "mobile_number")
     readonly_fields = ["age"]
-    list_display = ("name", "gender","permanent_address","mobile_number", "birthday","religion","caste","fathers_name","mothers_name","submitter_name")
+    list_display = (
+        "name",
+        "gender",
+        "permanent_address",
+        "mobile_number",
+        "birthday",
+        "religion",
+        "caste",
+        "fathers_name",
+        "mothers_name",
+        "submitter_name",
+    )
 
     def age(self, obj):
         if obj:
@@ -50,6 +61,9 @@ class PersonsFormAdmin(admin.ModelAdmin):
     def birthday(self, obj):
         dat = nepali_datetime.date.from_datetime_date(obj.bday)
         return dat.strftime("%K-%n-%D")
+
+    def submitter_name(self, obj):
+        return str(obj.submitter.username)
 
 
 admin_site.register(PersonsForm, PersonsFormAdmin)
