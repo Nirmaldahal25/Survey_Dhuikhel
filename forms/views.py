@@ -512,7 +512,7 @@ class StatementView(APIView):
         )
         writer = csv.writer(response)
         writer.writerow(headers)
-        
+
         for person in queryset:
             occupation = person.occupation_set.all().values_list("occupation")
             skills = person.personalskills_set.all().values_list("skills")
@@ -525,26 +525,29 @@ class StatementView(APIView):
                 StatementView.get_gender(person.gender),
                 StatementView.get_woda(person.permanent_address),
                 person.temporary_address,
-                getattr(person, "email", " "),
-                getattr(person, "citizenship", " "),
+                person.email if person.email else "",
+                person.citizenship if person.citizenship else "",
                 StatementView.nepali_date(person.bday),
                 person.age,
-                getattr(person, "fathers_name", ""),
-                getattr(person, "mothers_name", ""),
-                getattr(person, "religion", ""),
-                getattr(person, "caste", ""),
+                person.fathers_name if person.fathers_name else "",
+                person.mothers_name if person.mothers_name else "",
+                person.religion if person.religion else "",
+                person.caste if person.caste else "",
                 person.qualification,
-                getattr(person, "office_domestic", ""),
-                getattr(person, "office_international", ""),
+                person.office_domestic if person.office_domestic else "",
+                person.office_international if person.office_international else "",
                 person.mobile_number,
             ]
             iterate = zip_longest(
-                [person_list, occupation, skills, training, i_occupation],
-                fillvalue = " ",
+                [person_list],
+                list(occupation),
+                list(skills),
+                list(training),
+                list(i_occupation),
+                fillvalue="",
             )
             for info in iterate:
                 row = list()
-                print(info)
                 if info[0]:
                     row = [i for i in info[0]]
                     row.extend([info[1], info[2], info[3], info[4]])
@@ -564,7 +567,10 @@ class UserIdView(APIView):
     def get(get, request, format=None):
         if request and request.user:
             user = request.user
-            return Response({"id": user.id,"name": user.first_name + " " + user.last_name}, status=status.HTTP_200_OK)
+            return Response(
+                {"id": user.id, "name": user.first_name + " " + user.last_name},
+                status=status.HTTP_200_OK,
+            )
         return Response(
             {"error": "user not found"}, status=status.HTTP_401_UNAUTHORIZED
         )
