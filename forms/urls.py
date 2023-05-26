@@ -21,6 +21,8 @@ from forms.views import (
     InterestedOccupationRUDView,
     PersonSkillRUDView,
     PersonsTrainingRUDView,
+    # Get User
+    UserIdView,
 )
 
 from rest_framework.schemas import get_schema_view
@@ -39,6 +41,7 @@ urlpatterns = [
     path("list/castes/", view=CasteView.as_view(), name="list_castes"),
     path("list/occupations/", view=OccupationsView.as_view(), name="list_occupations"),
     path("list/skills/", view=PersonalSkillsView.as_view(), name="list_skills"),
+    path("user/", view=UserIdView.as_view(), name="get_user_id"),
     path(
         "list/admiredoccupations/",
         view=AdmiredOccuptionView.as_view(),

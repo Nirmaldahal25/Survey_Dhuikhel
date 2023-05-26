@@ -435,3 +435,17 @@ class StatsView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(request=request, **kwargs)
         return self.render_to_response(context)
+
+
+class UserIdView(APIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    def get(get, request, format=None):
+        if request and request.user:
+            user = request.user
+            return Response({"id": user.id}, status=status.HTTP_200_OK)
+        return Response(
+            {"error": "user not found"}, status=status.HTTP_401_UNAUTHORIZED
+        )
