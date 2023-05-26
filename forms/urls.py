@@ -10,6 +10,7 @@ from forms.views import (
     OccupationsView,
     AdmiredOccuptionView,
     PersonalSkillsView,
+    StatementView,
     # Person Views
     PersonListCreateView,
     PersonRetrieveUpdateDeleteView,
@@ -95,6 +96,7 @@ urlpatterns = [
         name="update_persons",
     ),
     path("persons/", view=PersonListCreateView.as_view(), name="list_persons"),
+    path("statement/", view=StatementView.as_view(), name="download_survey_report"),
     path(
         "api_schema",
         get_schema_view(title="Form schema", description="API schema for Forms"),

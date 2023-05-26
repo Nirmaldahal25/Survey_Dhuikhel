@@ -131,6 +131,8 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": ("rest_framework.schemas.coreapi.AutoSchema"),
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ],
 }
 
@@ -139,7 +141,7 @@ JAZZMIN_SETTINGS = {
     "site_header": "धुलिखेल युवा परिषद",
     "site_brand": "धुलिखेल युवा परिषद",
     "site_title": "धुलिखेल युवा परिषद",
-    "site_logo" : "Logo\dhulikhellogo.png",
+    "site_logo": "Logo\dhulikhellogo.png",
     "custom_links": {
         "forms": [
             {
@@ -148,5 +150,5 @@ JAZZMIN_SETTINGS = {
                 "icon": "fas fa-circle",
             }
         ]
-    }
+    },
 }

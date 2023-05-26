@@ -5,8 +5,9 @@ from rest_framework.generics import (
     ListCreateAPIView,
 )
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.db.models import Count
+from django.http import HttpResponse
 from forms.models import (
     PersonsForm,
     PersonTrainings,
@@ -23,6 +24,9 @@ from forms.serializers import (
     OccupationSerializer,
 )
 from django.views.generic import TemplateView
+from itertools import zip_longest
+import csv
+import nepali_datetime
 
 
 class GenderView(APIView):
@@ -452,6 +456,101 @@ class StatsView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(request=request, **kwargs)
         return self.render_to_response(context)
+
+
+class StatementView(APIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    @staticmethod
+    def get_gender(value):
+        for gend in PersonsForm.GENDER:
+            if value in gend:
+                return value[1]
+        return PersonsForm.GENDER[0][1]
+
+    @staticmethod
+    def get_woda(value):
+        for wod in PersonsForm.WODA:
+            if value in wod:
+                return value[1]
+        return PersonsForm.WODA[0][1]
+
+    @staticmethod
+    def nepali_date(date):
+        dat = nepali_datetime.date.from_datetime_date(date)
+        return dat.strftime("%K-%n-%D")
+
+    def get(self, request, *args, **kwargs):
+        queryset = PersonsForm.objects.all()
+        headers = [
+            "name",
+            "gender",
+            "permanent_address",
+            "temporary_address",
+            "email",
+            "citizensip",
+            "Birthday",
+            "Age",
+            "Fathers Name",
+            "Mothers Name",
+            "Religion",
+            "Caste",
+            "Qulification",
+            "Office Domestic",
+            "Office International",
+            "Mobile Number",
+            "Interested Occupation",
+            "Trainings",
+            "Skills",
+            "Occupation",
+        ]
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="survey.csv"'},
+        )
+        writer = csv.writer(response)
+        writer.writerow(headers)
+        for person in queryset:
+            occupation = person.occupation_set.all().values("occupation")
+            skills = person.personalskills_set.all().values("skills")
+            training = person.persontrainings_set.all().values("training")
+            i_occupation = person.interestedoccupation_set.all().values(
+                "interested_occupation"
+            )
+            person_list = [
+                person.name,
+                StatementView.get_gender(person.gender),
+                StatementView.get_woda(person.permanent_address),
+                person.temporary_address,
+                getattr(person, "email", default=""),
+                getattr(person, "citizenship", default=""),
+                StatementView.nepali_date(person.bday),
+                person.age,
+                getattr(person, "fathers_name", default=""),
+                getattr(person, "mothers_name", default=""),
+                getattr(person, "religion", default=""),
+                getattr(person, "caste", default=""),
+                person.qualification,
+                getattr(person, "office_domestic", default=""),
+                getattr(person, "office_international", default=""),
+                person.mobile_number,
+            ]
+            iterate = zip_longest(
+                [[[person_list]], occupation, skills, training, i_occupation],
+                fillvalue="",
+            )
+            for info in iterate:
+                row = list()
+                if info[0]:
+                    row = [info[0], info[1], info[2], info[3], info[4]]
+                else:
+                    row = ["" for _ in range(16)]
+                    other = [info[1], info[2], info[3], info[4]]
+                    row.extend(other)
+                writer.writerow(row)
+        return response
 
 
 class UserIdView(APIView):
