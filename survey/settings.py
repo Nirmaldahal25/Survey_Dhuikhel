@@ -136,6 +136,10 @@ REST_FRAMEWORK = {
 
 
 JAZZMIN_SETTINGS = {
+    "site_header": "धुलिखेल युवा परिषद",
+    "site_brand": "धुलिखेल युवा परिषद",
+    "site_title": "धुलिखेल युवा परिषद",
+    "site_logo" : "Logo\dhulikhellogo.png",
     "custom_links": {
         "forms": [
             {

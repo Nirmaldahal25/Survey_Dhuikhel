@@ -40,7 +40,7 @@ class PersonsFormAdmin(admin.ModelAdmin):
     ]
     search_fields = ("name", "citizenship", "email", "mobile_number")
     readonly_fields = ["age"]
-    list_display = ("name", "mobile_number", "citizenship", "birthday")
+    list_display = ("name", "gender","permanent_address","mobile_number", "birthday","religion","caste","fathers_name","mothers_name","submitter_name")
 
     def age(self, obj):
         if obj:

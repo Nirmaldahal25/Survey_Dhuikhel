@@ -8,74 +8,100 @@ Survey Report
 {% block content %}
     <link rel="stylesheet" href="{% static 'chartist/chartist.min.css' %}">
     <script type="text/javascript" src="{% static 'chartist/chartist.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #chart-container{
+            width: 100%;
+            height: 45vh;
+        }
+
+        .ct-series-a .ct-bar {
+             stroke: #F3D00D;
+        }
+    </style>
     <div class="container-fluid">
-        <div class="card text-center">
+        <div class="form-group">
+            <label for="chart-select">Select Chart:</label>
+            <select id="chart-select" class="form-control">
+                <option value="default">...</option>
+                <option value="gender">लि‌ङ्ग</option>
+                <option value="woda">स्थायी बसोबास</option>
+                <option value="religion">धर्म</option>
+                <option value="caste">जात</option>
+                <option value="occupation">पेशा</option>
+                <option value="adoccupation">ईच्छाइएको पेशाहरू</option>
+                <option value="skill">सिप</option>
+                <option value="training">लिन ईच्छाइएको तालिमहरू</option>
+                <option value="qualification">शैक्षिक योग्यता</option>
+            </select>
+        </div>
+
+        <div id = "gender" class="card text-center">
             <div class="card-header">
             लि‌ङ्ग
             </div>
             <div class="card-body">
-                <div class="gender-chart"></div>
+                <div id="chart-container" class="gender-chart"></div>
             </div>
             <div class="card-footer text-muted">
                 १. महिला, २. पुरुष, ३. अन्य
             </div>
         </div>
 
-        <div class="card text-center">
+        <div id = "woda" class="card text-center">
             <div class="card-header">
             स्थायी बसोबास
             </div>
             <div class="card-body">
-                <div class="woda-chart"></div>
+                <div id="chart-container" class="woda-chart"></div>
             </div>
             <div class="card-footer text-muted">
                 वोडा नं १, २, ३, ४, ५, ६, ७, ८, ९, १०, ११, १२
             </div>
         </div>
 
-
-        <div class="card text-center">
+        <div id = "religion" class="card text-center">
             <div class="card-header">
             धर्म
             </div>
             <div class="card-body">
-                <div class="religion-chart"></div>
+                <div id="chart-container" class="religion-chart"></div>
             </div>
             <div class="card-footer text-muted">
                 हिन्दु, बौद्व, क्रिस्चियन, मुस्लिम, अन्य
             </div>
         </div>
 
-        <div class="card text-center">
+        <div id = "caste" class="card text-center">
             <div class="card-header">
             जात
             </div>
             <div class="card-body">
-                <div class="caste-chart"></div>
+                <div id="chart-container" class="caste-chart"></div>
             </div>
             <div class="card-footer text-muted">
                 ब्राम्हण/क्षत्री, जनजाती, दलित, अल्पसंख्यक, अन्य
             </div>
         </div>
 
-        <div class="card text-center">
+        <div id = "occupation" class="card text-center">
             <div class="card-header">
             पेशा
             </div>
             <div class="card-body">
-                <div class="occupation-chart"></div>
+                <div id="chart-container" class="occupation-chart"></div>
             </div>
             <div class="card-footer text-muted">
                 सरकारी सेवा करार, सरकारी सेवा स्थायी,शिक्षण सरकारी, शिक्षण प्राइभेट, प्राइभेट नोकरी, बैंक, विमा, सहकारी संस्था, होटल व्यवसायी, आफ्नै व्यवसायी, कुनै पेशा रोजगारमा संलग्न नरहेको
             </div>
         </div>
 
-        <div class="card text-center">
+        <div id = "adoccupation" class="card text-center">
             <div class="card-header">
             ईच्छाइएको पेशाहरू
             </div>
             <div class="card-body">
-                <div class="adoccupation-chart"></div>
+                <div id="chart-container" class="adoccupation-chart"></div>
             </div>
             <div class="card-footer text-muted">
                 कृषि तथा पशुपालन,
@@ -88,12 +114,12 @@ Survey Report
         </div>
 
 
-        <div class="card text-center">
+        <div id = "skill" class="card text-center">
             <div class="card-header">
             सिप
             </div>
             <div class="card-body">
-                <div class="skill-chart"></div>
+                <div id="chart-container" class="skill-chart"></div>
             </div>
             <div class="card-footer text-muted">
                 ...
@@ -101,12 +127,12 @@ Survey Report
         </div>
 
 
-        <div class="card text-center">
+        <div id = "training" class="card text-center">
             <div class="card-header">
             लिन ईच्छाइएको तालिमहरू
             </div>
             <div class="card-body">
-                <div class="training-chart"></div>
+                <div id="chart-container" class="training-chart"></div>
             </div>
             <div class="card-footer text-muted">
             कृषि तथा पशुपालन सम्बन्धी तालिम, पर्यटन व्यवसाय(होमस्टे, होटल व्यवसाय) सम्बन्धी तालिम, साना तथा घरेलु उधोग संचालन सम्बन्धी तालिम, सरकारी सेवा तयारी तालिम, गित, संगीत र साहित्य सम्बन्धी तालिम, खेलकुद सम्बन्धी तालिम, 
@@ -114,12 +140,12 @@ Survey Report
             </div>
         </div>
 
-        <div class="card text-center">
+        <div id = "qualification" class="card text-center">
             <div class="card-header">
             शैक्षिक योग्यता
             </div>
             <div class="card-body">
-                <div class="qualification-chart"></div>
+                <div id="chart-container" class="qualification-chart"></div>
             </div>
             <div class="card-footer text-muted">
                 ...
@@ -128,64 +154,118 @@ Survey Report
     </div>
     
 
-    <script type="text/javascript">
-        var genderData = { 
-            labels : ["महिला","पुरुष", "अन्य"],
-            series : [[{% for key,value in genders_count.items %} {{ value }},{% endfor %}]],
-        };
-        var options = {
-            seriesBarDistance: 10
-        };
-        var gender = new Chartist.Bar('.gender-chart', genderData, options);
+    <script type="text/javascript">  
+        $(document).ready(function() {
+            //Hide all the card initially.
+            $('.card').hide();
+            //Show the card based on the dropdown value.
+            $("#chart-select").change(function() {
+                var selectedChart = $(this).val();
+                $('.card').hide();
+                $("#" + selectedChart).show();
+
+                function renderBarLabels(chart) {
+                    chart.on('draw', function(data) {
+                        if (data.type === 'bar') {
+                        var bar = data.element;
+                        var value = data.value.y;
+                        var xPos = data.x1  + (bar.width() / 2);
+                        var yPos = data.y1 - bar.height() - 4;
+                        data.group
+                            .elem('text', {
+                            x: xPos,
+                            y: yPos,
+                            style: 'text-anchor: middle'
+                            }, 'ct-bar-label')
+                            .text(value);
+                        }
+                    });
+                }
+                var genderData = { 
+                    labels : ["महिला","पुरुष", "अन्य"],
+                    series : [[{% for key,value in genders_count.items %} {{ value }},{% endfor %}]],
+                };
+                var options = {
+                    seriesBarDistance: 10,
+                };
+                var gender = new Chartist.Bar('.gender-chart', genderData, options,);
+                renderBarLabels(gender);
+                // var data = {
+                //     series: [5, 3, 0]
+                // };
+
+                // var sum = function(a, b) { return a + b };
+
+                // var gender = new Chartist.Pie('.gender-chart', data, {
+                //     labelInterpolationFnc: function(value) {
+                //         return value;
+                //     // return Math.round(value / data.series.reduce(sum) * 100) + '%';
+                // }
+                // });
+
+                var wodaData = { 
+                    labels : ["१","२","३","४","५","६","७","८","९","१०","११","१२"],
+                    series : [[{% for key,value in woda_count.items %} {{ value }},{% endfor %}]],
+                };
+                var woda = new Chartist.Bar('.woda-chart', wodaData, options);
+                renderBarLabels(woda);
+
+                var religionData = { 
+                    labels : [{% for value in religion_count.religion_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in religion_count.count %} {{ value }},{% endfor %}]],
+                };
+                var religion = new Chartist.Bar('.religion-chart', religionData, options);
+                renderBarLabels(religion);
+
+                var casteData = { 
+                    labels : [{% for value in caste_count.caste_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in caste_count.count %} {{ value }},{% endfor %}]],
+                };
+                var caste = new Chartist.Bar('.caste-chart', casteData, options);
+                renderBarLabels(caste);
+
+                var occupationsData = { 
+                    labels : [{% for value in occupation_count.occupation_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in occupation_count.count %} {{ value }},{% endfor %}]],
+                };
+                var occupation = new Chartist.Bar('.occupation-chart', occupationsData, options);
+                renderBarLabels(occupation);
+
+                var adoccupationsData = { 
+                    labels : [{% for value in adoccupation_count.occupation_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in adoccupation_count.count %} {{ value }},{% endfor %}]],
+                };
+                var adoccupation = new Chartist.Bar('.adoccupation-chart', adoccupationsData, options);
+                renderBarLabels(adoccupation);
+
+                var skillsData = { 
+                    labels : [{% for value in skill_count.skill_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in skill_count.count %} {{ value }},{% endfor %}]],
+                };
+                var skill = new Chartist.Bar('.skill-chart', skillsData, options);
+                renderBarLabels(skill);
 
 
-        var wodaData = { 
-            labels : ["१","२","३","४","५","६","७","८","९","१०","११","१२"],
-            series : [[{% for key,value in woda_count.items %} {{ value }},{% endfor %}]],
-        };
-        var woda = new Chartist.Bar('.woda-chart', wodaData, options);
+                var trainingsData = { 
+                    labels : [{% for value in skill_count.training_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in skill_count.count %} {{ value }},{% endfor %}]],
+                };
+                var training = new Chartist.Bar('.training-chart', trainingsData, options);
+                renderBarLabels(training);
 
-        var religionData = { 
-            labels : [{% for value in religion_count.religion_name %} '{{ value }}',{% endfor %}],
-            series : [[{% for value in religion_count.count %} {{ value }},{% endfor %}]],
-        };
-        var religion = new Chartist.Bar('.religion-chart', religionData, options);
+                var qualificationsData = { 
+                    labels : [{% for value in qualification_count.qualification_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in qualification_count.count %} {{ value }},{% endfor %}]],
+                };
+                var qualification = new Chartist.Bar('.qualification-chart', qualificationsData, options);
+                renderBarLabels(qualification);
+                // setTimeout(function() {$(window).trigger('resize');}, 100);
+            });
 
-        var casteData = { 
-            labels : [{% for value in caste_count.caste_name %} '{{ value }}',{% endfor %}],
-            series : [[{% for value in caste_count.count %} {{ value }},{% endfor %}]],
-        };
-        var caste = new Chartist.Bar('.caste-chart', casteData, options);
-
-        var occupationsData = { 
-            labels : [{% for value in occupation_count.occupation_name %} '{{ value }}',{% endfor %}],
-            series : [[{% for value in occupation_count.count %} {{ value }},{% endfor %}]],
-        };
-        var occupation = new Chartist.Bar('.occupation-chart', occupationsData, options);
-
-        var adoccupationsData = { 
-            labels : [{% for value in adoccupation_count.occupation_name %} '{{ value }}',{% endfor %}],
-            series : [[{% for value in adoccupation_count.count %} {{ value }},{% endfor %}]],
-        };
-        var adoccupation = new Chartist.Bar('.adoccupation-chart', adoccupationsData, options);
-
-        var skillsData = { 
-            labels : [{% for value in skill_count.skill_name %} '{{ value }}',{% endfor %}],
-            series : [[{% for value in skill_count.count %} {{ value }},{% endfor %}]],
-        };
-        var skill = new Chartist.Bar('.skill-chart', skillsData, options);
+            /////////////
+            
+        });
 
 
-        var trainingsData = { 
-            labels : [{% for value in skill_count.training_name %} '{{ value }}',{% endfor %}],
-            series : [[{% for value in skill_count.count %} {{ value }},{% endfor %}]],
-        };
-        var training = new Chartist.Bar('.training-chart', trainingsData, options);
-
-        var qualificationsData = { 
-            labels : [{% for value in qualification_count.qualification_name %} '{{ value }}',{% endfor %}],
-            series : [[{% for value in qualification_count.count %} {{ value }},{% endfor %}]],
-        };
-        var qualification = new Chartist.Bar('.qualification-chart', qualificationsData, options);
     </script>
 {% endblock %}
