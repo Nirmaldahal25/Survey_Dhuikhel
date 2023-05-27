@@ -27,6 +27,7 @@ from django.views.generic import TemplateView
 from itertools import zip_longest
 import csv
 import nepali_datetime
+import codecs
 
 
 class GenderView(APIView):
@@ -536,6 +537,7 @@ class StatementView(APIView):
             content_type="text/csv",
             headers={"Content-Disposition": 'attachment; filename="survey.csv"'},
         )
+        response.write(codecs.BOM_UTF8)
         writer = csv.writer(response)
         writer.writerow(headers)
 
