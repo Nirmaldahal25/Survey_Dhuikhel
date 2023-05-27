@@ -36,6 +36,7 @@ Survey Report
                 <option value="skill">सिप</option>
                 <option value="training">लिन ईच्छाइएको तालिमहरू</option>
                 <option value="qualification">शैक्षिक योग्यता</option>
+                <option value="blood-group">रगत समूह</option>
             </select>
         </div>
 
@@ -154,6 +155,18 @@ Survey Report
                 ...
             </div>
         </div>
+
+        <div id = "blood-group" class="card text-center">
+            <div class="card-header">
+            रगत समुह
+            </div>
+            <div class="card-body">
+                <div id="chart-container" class="blood-group-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                १. A+, २. A-, ३. B+, ४. B-, ५. AB+, ६. AB-, ७. O+, ८. O-, ९. थाछैन
+            </div>
+        </div>
     </div>
     
 
@@ -263,6 +276,13 @@ Survey Report
                 var qualification = new Chartist.Bar('.qualification-chart', qualificationsData, options);
                 renderBarLabels(qualification);
                 // setTimeout(function() {$(window).trigger('resize');}, 100);
+
+                var bloodGrpData = { 
+                    labels : [{% for value in blood_group_count.blood_group_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in blood_group_count.count %} {{ value }},{% endfor %}]],
+                };
+                var bloodGrp = new Chartist.Bar('.blood-group-chart', qualificationsData, options);
+                renderBarLabels(bloodGrp);
             });
 
             /////////////

@@ -11,6 +11,7 @@ from forms.views import (
     AdmiredOccuptionView,
     PersonalSkillsView,
     StatementView,
+    BloodGroupView,
     # Person Views
     PersonListCreateView,
     PersonRetrieveUpdateDeleteView,
@@ -44,6 +45,7 @@ urlpatterns = [
     path("list/castes/", view=CasteView.as_view(), name="list_castes"),
     path("list/occupations/", view=OccupationsView.as_view(), name="list_occupations"),
     path("list/skills/", view=PersonalSkillsView.as_view(), name="list_skills"),
+    path("list/bloodgroups/", view=BloodGroupView.as_view(), name="list_blood_groups"),
     path("user/", view=UserIdView.as_view(), name="get_user_id"),
     path(
         "list/admiredoccupations/",

@@ -102,6 +102,14 @@ class QualificationsView(APIView):
         return Response(data=qualifications_dict, status=status.HTTP_200_OK)
 
 
+class BloodGroupView(APIView):
+    def get(self, request, format=None):
+        blood_group = dict()
+        for key, value in PersonsForm.BLOOD_GROUP:
+            blood_group[key] = value
+        return Response(data=blood_group, status=status.HTTP_200_OK)
+
+
 class OccupationsView(APIView):
     def get(self, request, format=None):
         occupations_dict = Occupation.OCCUPATION.copy()
@@ -428,6 +436,22 @@ class StatsView(TemplateView):
                 qualification_count["count"].append(value)
         return qualification_count
 
+    def get_blood_group_report(self):
+        blood_grp = (
+            PersonsForm.objects.values("blood_group")
+            .annotate(count=Count("blood_group"))
+            .order_by("-count")
+        )
+        blood_grp_count = {
+            "blood_group_name": [],
+            "count": [],
+        }
+        for key, value in blood_grp.values_list("blood_group", "count"):
+            if key:
+                blood_grp_count["blood_group_name"].append(key)
+                blood_grp_count["count"].append(value)
+        return blood_grp_count
+
     def get_context_data(self, request, **kwargs):
         genders_count = self.get_gender_report()
         woda_count = self.get_woda_report()
@@ -438,6 +462,7 @@ class StatsView(TemplateView):
         training_count = self.get_training_report()
         adoccupation_count = self.get_admired_occupation_report()
         qualification_count = self.get_qualification_report()
+        blood_group_count = self.get_blood_group_report()
 
         self.extra_context = dict(
             self.model_admin.each_context(request),
@@ -450,6 +475,7 @@ class StatsView(TemplateView):
             training_count=training_count,
             adoccupation_count=adoccupation_count,
             qualification_count=qualification_count,
+            blood_group_count=blood_group_count,
         )
         return super().get_context_data(**kwargs)
 

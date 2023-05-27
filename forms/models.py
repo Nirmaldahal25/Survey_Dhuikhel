@@ -67,6 +67,18 @@ class PersonsForm(models.Model):
         3: "दलित",
         4: "अल्पसंख्यक",
     }
+
+    BLOOD_GROUP = {
+        (1, "A+"),
+        (2, "A-"),
+        (3, "B+"),
+        (4, "B-"),
+        (5, "AB+"),
+        (6, "AB-"),
+        (7, "O+"),
+        (8, "O-"),
+        (9, "थाछैन"),
+    }
     name = models.CharField(max_length=256, null=False, blank=False)
     gender = models.IntegerField(choices=GENDER, null=False, blank=False)
     permanent_address = models.IntegerField(choices=WODA, blank=False, null=False)
@@ -88,6 +100,7 @@ class PersonsForm(models.Model):
     photo = models.ImageField(
         null=True, blank=True, upload_to=save_user_photo, storage=OverwriteStorage()
     )
+    blood_group = models.IntegerField(choices=BLOOD_GROUP, blank=False, null=False)
 
     @property
     def age(self):
