@@ -46,21 +46,21 @@ urlpatterns = [
     path("list/occupations/", view=OccupationsView.as_view(), name="list_occupations"),
     path("list/skills/", view=PersonalSkillsView.as_view(), name="list_skills"),
     path("list/bloodgroups/", view=BloodGroupView.as_view(), name="list_blood_groups"),
-    path("user/", view=UserIdView.as_view(), name="get_user_id"),
     path(
         "list/admiredoccupations/",
         view=AdmiredOccuptionView.as_view(),
         name="list_admired_occupations",
     ),
+    path("user/", view=UserIdView.as_view(), name="get_user_id"),
     path(
-        "persons/<int:person>/qualifications/<int:pk>/",
+        "persons/<int:person>/admiredoccupations/<int:pk>/",
         view=InterestedOccupationRUDView.as_view(),
-        name="rud_person_qualifications",
+        name="rud_person_interested_occupations",
     ),
     path(
         "persons/<int:person>/skills/<int:pk>/",
         view=PersonSkillRUDView.as_view(),
-        name="rud_person_qualifications",
+        name="rud_person_skills",
     ),
     path(
         "persons/<int:person>/trainings/<int:pk>/",
@@ -73,9 +73,14 @@ urlpatterns = [
         name="rud_person_occupations",
     ),
     path(
-        "persons/<int:person>/qualifications/",
+        "persons/<int:person>/admiredoccupations/",
         view=InterestedOccupationListCreateView.as_view(),
-        name="list_person_qualifications",
+        name="list_person_interested_occupations",
+    ),
+    path(
+        "persons/<int:person>/occupations/",
+        view=OccupationListCreateView.as_view(),
+        name="list_person_occupations",
     ),
     path(
         "persons/<int:person>/skills/",
@@ -88,14 +93,9 @@ urlpatterns = [
         name="list_persons_training",
     ),
     path(
-        "persons/<int:person>/occupations/",
-        view=OccupationListCreateView.as_view(),
-        name="list_persons_occupations",
-    ),
-    path(
         "persons/<int:pk>/",
         view=PersonRetrieveUpdateDeleteView.as_view(),
-        name="update_persons",
+        name="rud_persons",
     ),
     path("persons/", view=PersonListCreateView.as_view(), name="list_persons"),
     path("statement/", view=StatementView.as_view(), name="download_survey_report"),
