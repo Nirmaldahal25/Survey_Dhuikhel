@@ -4,6 +4,7 @@ from django.db import models
 import nepali_datetime
 from django.contrib.auth.models import User
 from forms.storage import OverwriteStorage
+from django.core.validators import RegexValidator
 
 
 def save_user_photo(instance, filename):
@@ -93,7 +94,14 @@ class PersonsForm(models.Model):
     qualification = models.CharField(blank=False, null=False, max_length=200)
     office_domestic = models.CharField(blank=True, null=True, max_length=400)
     office_international = models.CharField(blank=True, null=True, max_length=400)
-    mobile_number = models.PositiveIntegerField(null=False, blank=False)
+
+    phone_regex = RegexValidator(
+        regex=r"^(\+\d{1,3})?,?\s?\d{8,13}",
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
+    )
+    mobile_number = models.CharField(
+        null=False, blank=False, unique=True, validators=[phone_regex], max_length=17
+    )
     submitter = models.ForeignKey(
         User, null=False, blank=False, on_delete=models.DO_NOTHING
     )
@@ -125,7 +133,7 @@ class InterestedOccupation(models.Model):
     person = models.ForeignKey(
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False
     )
-    interested_occupation = models.CharField(blank=True, null=True, max_length=400)
+    interested_occupation = models.CharField(blank=False, null=False, max_length=400)
 
     class Meta:
         unique_together = ("person", "interested_occupation")
