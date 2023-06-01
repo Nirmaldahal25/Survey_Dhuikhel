@@ -3,4 +3,4 @@ import sys
 
 
 sys.path.insert(0, os.path.dirname(__file__))
-from survey.application import application
+from survey.wsgi import application
