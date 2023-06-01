@@ -1,16 +1,19 @@
 from django.db import models
 
-# makemigrations - create changes and store in a file 
+# makemigrations - create changes and store in a file
 # migrate - apply the pending changes created by makemigrations
 
 # Create your models here.
 
+
 def save_user_photo(instance, filename):
-    return f"{instance.name}/{instance.mobile_number}/{filename}"
+    return "stakeholders/{instance.mobile_number}/{filename}"
+
+
 from forms.storage import OverwriteStorage
 
-class About(models.Model):
 
+class About(models.Model):
     DHULIKHEL_1 = 1
     DHULIKHEL_2 = 2
     DHULIKHEL_3 = 3
@@ -49,4 +52,3 @@ class About(models.Model):
 
     def __str__(self):
         return self.name
-    
