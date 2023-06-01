@@ -60,6 +60,7 @@ class PersonsFormAdmin(admin.ModelAdmin):
         "fathers_name",
         "mothers_name",
         "submitter_name",
+        "blood_group",
     )
 
     def age(self, obj):

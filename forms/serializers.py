@@ -26,7 +26,7 @@ class PersonSkillsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class OccupationSerializer(serializers.Serializer):
+class OccupationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Occupation
         fields = "__all__"
