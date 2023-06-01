@@ -152,7 +152,7 @@ class PersonTrainings(models.Model):
     person = models.ForeignKey(
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False
     )
-    training = models.CharField(blank=False, null=False, max_length=2000)
+    training = models.CharField(blank=False, null=False, max_length=400)
 
     class Meta:
         unique_together = ("person", "training")
@@ -162,7 +162,7 @@ class PersonalSkills(models.Model):
     person = models.ForeignKey(
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False
     )
-    skills = models.CharField(blank=False, null=False, max_length=2000)
+    skills = models.CharField(blank=False, null=False, max_length=400)
 
     class Meta:
         unique_together = ("person", "skills")
@@ -182,7 +182,7 @@ class Occupation(models.Model):
         10: "आफ्नै व्यवसायी",
         11: "कुनै पेशा रोजगारमा संलग्न नरहेको",
     }
-    occupation = models.CharField(blank=False, null=False, max_length=300)
+    occupation = models.CharField(blank=False, null=False, max_length=400)
     person = models.ForeignKey(
         PersonsForm, on_delete=models.CASCADE, null=False, blank=False
     )
