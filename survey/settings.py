@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,8 +84,13 @@ WSGI_APPLICATION = "survey.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "mysql.connector.django",
+        "NAME": env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'OPTIONS': {
+            'autocommit': True,
+        }
     }
 }
 
@@ -125,7 +134,7 @@ STATIC_ROOT = "static"
 STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = "media"
+MEDIA_ROOT = "/home5/dhulikhelyuwapar/public_html/media"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
