@@ -68,7 +68,7 @@ class PersonsForm(models.Model):
         4: "अल्पसंख्यक",
     }
 
-    BLOOD_GROUP = {
+    BLOOD_GROUP = (
         (1, "A+"),
         (2, "A-"),
         (3, "B+"),
@@ -78,7 +78,7 @@ class PersonsForm(models.Model):
         (7, "O+"),
         (8, "O-"),
         (9, "थाछैन"),
-    }
+    )
     name = models.CharField(max_length=256, null=False, blank=False)
     gender = models.IntegerField(choices=GENDER, null=False, blank=False)
     permanent_address = models.IntegerField(choices=WODA, blank=False, null=False)
