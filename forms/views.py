@@ -374,7 +374,7 @@ class StatsView(TemplateView):
 
     def get_occupation_report(self):
         occupation = (
-            PersonsForm.objects.values("occupation")
+            Occupation.objects.values("occupation")
             .annotate(count=Count("occupation"))
             .order_by("-count")
         )
