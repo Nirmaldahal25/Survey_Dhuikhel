@@ -276,8 +276,8 @@ Survey Report
 
 
                 var trainingsData = { 
-                    labels : [{% for value in skill_count.training_name %} '{{ value }}',{% endfor %}],
-                    series : [[{% for value in skill_count.count %} {{ value }},{% endfor %}]],
+                    labels : [{% for value in training_count.training_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in training_count.count %} {{ value }},{% endfor %}]],
                 };
                 var training = new Chartist.Bar('.training-chart', trainingsData, options);
                 renderBarLabels(training);
