@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 # makemigrations - create changes and store in a file
 # migrate - apply the pending changes created by makemigrations
@@ -43,7 +44,13 @@ class About(models.Model):
     )
     name = models.CharField(max_length=200, null=False, blank=False)
     email = models.CharField(max_length=200, null=True, blank=True)
-    mobile_number = models.PositiveIntegerField(null=False, blank=False)
+    phone_regex = RegexValidator(
+        regex=r"^(\+\d{1,3})?,?\s?\d{8,13}",
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
+    )
+    mobile_number = models.CharField(
+        null=False, blank=False, unique=True, validators=[phone_regex], max_length=17
+    )
     position = models.CharField(max_length=200, blank=True, null=True)
     address = models.IntegerField(choices=WODA, blank=True, null=True)
     photo = models.ImageField(
