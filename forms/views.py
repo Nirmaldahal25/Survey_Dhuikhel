@@ -610,6 +610,7 @@ class LoginView(APIView):
             token = Token.objects.create(user=user)
             token.save()
         userdict = {
+            "id": user.id,
             "username": user.username,
             "name": f"{user.first_name} {user.last_name}",
             "email": user.email,

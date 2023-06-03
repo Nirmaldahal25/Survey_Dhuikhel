@@ -84,6 +84,7 @@ class PersonsForm(models.Model):
     MARRIED_STATUS = (
         (1, "विवाहित"),
         (2, "अविवाहित"),
+        (3, "सम्बन्धविच्छेद भएको"),
     )
     name = models.CharField(max_length=256, null=False, blank=False)
     gender = models.IntegerField(choices=GENDER, null=False, blank=False)
