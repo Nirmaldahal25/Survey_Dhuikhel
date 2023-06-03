@@ -7,7 +7,7 @@ from django.db import models
 
 
 def save_user_photo(instance, filename):
-    return "stakeholders/{instance.mobile_number}/{filename}"
+    return f"stakeholders/{instance.mobile_number}/{filename}"
 
 
 from forms.storage import OverwriteStorage
