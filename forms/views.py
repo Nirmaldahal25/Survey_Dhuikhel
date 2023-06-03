@@ -31,6 +31,11 @@ import csv
 import nepali_datetime
 import codecs
 import datetime
+from django.contrib.staticfiles.storage import staticfiles_storage
+import base64
+import os
+
+from django.conf import settings
 
 
 class GenderView(APIView):
@@ -369,7 +374,7 @@ class StatsView(TemplateView):
 
     def get_occupation_report(self):
         occupation = (
-            PersonsForm.objects.values("occupation")
+            Occupation.objects.values("occupation")
             .annotate(count=Count("occupation"))
             .order_by("-count")
         )
@@ -463,6 +468,22 @@ class StatsView(TemplateView):
                 blood_grp_count["count"].append(value)
         return blood_grp_count
 
+    def get_marriage_status_report(self):
+        marriage_grp = (
+            PersonsForm.objects.values("married")
+            .annotate(count=Count("married"))
+            .order_by("-count")
+        )
+        marriage_grp_count = {
+            "marriage_group_name": [],
+            "count": [],
+        }
+        for key, value in marriage_grp.values_list("married", "count"):
+            if key:
+                marriage_grp_count["marriage_group_name"].append(key)
+                marriage_grp_count["count"].append(value)
+        return marriage_grp_count
+
     def get_context_data(self, request, **kwargs):
         genders_count = self.get_gender_report()
         woda_count = self.get_woda_report()
@@ -474,6 +495,7 @@ class StatsView(TemplateView):
         adoccupation_count = self.get_admired_occupation_report()
         qualification_count = self.get_qualification_report()
         blood_group_count = self.get_blood_group_report()
+        marriage_count = self.get_marriage_status_report()
 
         self.extra_context = dict(
             self.model_admin.each_context(request),
@@ -487,6 +509,7 @@ class StatsView(TemplateView):
             adoccupation_count=adoccupation_count,
             qualification_count=qualification_count,
             blood_group_count=blood_group_count,
+            marriage_count=marriage_count,
         )
         return super().get_context_data(**kwargs)
 
@@ -514,6 +537,9 @@ class StatementView(APIView):
                 return wod[1]
         return PersonsForm.WODA[0][1]
 
+    def generate_photo_url(self, photo_name):
+        return self.request.build_absolute_uri(settings.MEDIA_URL + photo_name)
+
     @staticmethod
     def nepali_date(date):
         dat = nepali_datetime.date.from_datetime_date(date)
@@ -538,6 +564,7 @@ class StatementView(APIView):
             "Office Domestic",
             "Office International",
             "Mobile Number",
+            "Photo",
             "Interested Occupation",
             "Trainings",
             "Skills",
@@ -558,6 +585,18 @@ class StatementView(APIView):
             i_occupation = person.interestedoccupation_set.all().values_list(
                 "interested_occupation"
             )
+
+            # photo_data = ""
+            # if person.photo:
+            #     with open(person.photo.path, "rb") as photo_file:
+            #         photo_data = base64.b64encode(photo_file.read()).decode("utf-8")
+            # photo_path = ""
+            # if person.photo:
+            #     photo_path = os.path.join(settings.MEDIA_ROOT, person.photo.name)
+            photo_path = (
+                self.generate_photo_url(person.photo.name) if person.photo else ""
+            )
+
             person_list = [
                 person.name,
                 StatementView.get_gender(person.gender),
@@ -575,6 +614,7 @@ class StatementView(APIView):
                 person.office_domestic if person.office_domestic else "",
                 person.office_international if person.office_international else "",
                 person.mobile_number,
+                photo_path,
             ]
             iterate = zip_longest(
                 [person_list],
@@ -610,6 +650,7 @@ class LoginView(APIView):
             token = Token.objects.create(user=user)
             token.save()
         userdict = {
+            "id": user.id,
             "username": user.username,
             "name": f"{user.first_name} {user.last_name}",
             "email": user.email,

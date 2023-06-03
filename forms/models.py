@@ -84,6 +84,7 @@ class PersonsForm(models.Model):
     MARRIED_STATUS = (
         (1, "विवाहित"),
         (2, "अविवाहित"),
+        (3, "सम्बन्धविच्छेद भएको"),
     )
     name = models.CharField(max_length=256, null=False, blank=False)
     gender = models.IntegerField(choices=GENDER, null=False, blank=False)
@@ -91,7 +92,7 @@ class PersonsForm(models.Model):
     temporary_address = models.CharField(blank=False, null=False, max_length=300)
     email = models.EmailField(blank=True, null=True)
     citizenship = models.CharField(max_length=30, blank=True, null=True)
-    bday = models.DateField(null=False, blank=False)
+    bday = models.DateField(null=True, blank=True)
     fathers_name = models.CharField(blank=True, null=True, max_length=256)
     mothers_name = models.CharField(blank=True, null=True, max_length=256)
     religion = models.CharField(blank=True, null=True, max_length=100)
@@ -105,7 +106,7 @@ class PersonsForm(models.Model):
         message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
     )
     mobile_number = models.CharField(
-        null=False, blank=False, unique=True, validators=[phone_regex], max_length=17
+        null=True, blank=True, unique=True, validators=[phone_regex], max_length=17
     )
     submitter = models.ForeignKey(
         User, null=False, blank=False, on_delete=models.DO_NOTHING

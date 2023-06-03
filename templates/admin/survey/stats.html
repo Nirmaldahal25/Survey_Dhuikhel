@@ -37,6 +37,7 @@ Survey Report
                 <option value="training">लिन ईच्छाइएको तालिमहरू</option>
                 <option value="qualification">शैक्षिक योग्यता</option>
                 <option value="blood-group">रगत समूह</option>
+                <option value="marriage-group">विवाह स्थिति</option>
             </select>
         </div>
 
@@ -167,6 +168,18 @@ Survey Report
                 १. A+, २. A-, ३. B+, ४. B-, ५. AB+, ६. AB-, ७. O+, ८. O-, ९. थाछैन
             </div>
         </div>
+
+        <div id = "marriage-group" class="card text-center">
+            <div class="card-header">
+            विवाह स्थिति
+            </div>
+            <div class="card-body">
+                <div id="chart-container" class="marriage-group-chart"></div>
+            </div>
+            <div class="card-footer text-muted">
+                १. विवाहित, २. अविवाहित, ३. सम्बन्धविच्छेद भएको, ४. अन्य
+            </div>
+        </div>
     </div>
     
 
@@ -263,8 +276,8 @@ Survey Report
 
 
                 var trainingsData = { 
-                    labels : [{% for value in skill_count.training_name %} '{{ value }}',{% endfor %}],
-                    series : [[{% for value in skill_count.count %} {{ value }},{% endfor %}]],
+                    labels : [{% for value in training_count.training_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in training_count.count %} {{ value }},{% endfor %}]],
                 };
                 var training = new Chartist.Bar('.training-chart', trainingsData, options);
                 renderBarLabels(training);
@@ -281,8 +294,15 @@ Survey Report
                     labels : [{% for value in blood_group_count.blood_group_name %} '{{ value }}',{% endfor %}],
                     series : [[{% for value in blood_group_count.count %} {{ value }},{% endfor %}]],
                 };
-                var bloodGrp = new Chartist.Bar('.blood-group-chart', qualificationsData, options);
+                var bloodGrp = new Chartist.Bar('.blood-group-chart', bloodGrpData, options);
                 renderBarLabels(bloodGrp);
+
+                var marriageData = { 
+                    labels : [{% for value in marriage_count.marriage_group_name %} '{{ value }}',{% endfor %}],
+                    series : [[{% for value in marriage_count.count %} {{ value }},{% endfor %}]],
+                };
+                var marriageStatus = new Chartist.Bar('.marriage-group-chart', marriageData, options);
+                renderBarLabels(marriageStatus);
             });
 
             /////////////

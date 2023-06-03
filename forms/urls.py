@@ -32,6 +32,8 @@ from forms.views import (
 
 from rest_framework.schemas import get_schema_view
 from rest_framework.documentation import include_docs_urls
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("list/gender/", view=GenderView.as_view(), name="list_genders"),
@@ -107,4 +109,4 @@ urlpatterns = [
         name="api-schema",
     ),
     path("docs/", include_docs_urls(title="Forms API")),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
