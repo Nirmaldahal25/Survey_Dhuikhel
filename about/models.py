@@ -41,8 +41,8 @@ class About(models.Model):
         (DHULIKHEL_11, "धुलिखेल वडा नं ११"),
         (DHULIKHEL_12, "धुलिखेल वडा नं १२"),
     )
-    name = models.CharField(max_length=122, null=False, blank=False)
-    email = models.CharField(max_length=122, null=True, blank=True)
+    name = models.CharField(max_length=200, null=False, blank=False)
+    email = models.CharField(max_length=200, null=True, blank=True)
     mobile_number = models.PositiveIntegerField(null=False, blank=False)
     position = models.CharField(max_length=200, blank=True, null=True)
     address = models.IntegerField(choices=WODA, blank=True, null=True)
