@@ -31,6 +31,12 @@ import csv
 import nepali_datetime
 import codecs
 import datetime
+from django.contrib.staticfiles.storage import staticfiles_storage
+import base64
+import os
+
+from django.conf import settings
+
 
 
 class GenderView(APIView):
@@ -513,6 +519,10 @@ class StatementView(APIView):
             if value in wod:
                 return wod[1]
         return PersonsForm.WODA[0][1]
+    
+    def generate_photo_url(self, photo_name):
+        return self.request.build_absolute_uri(settings.MEDIA_URL + photo_name)
+
 
     @staticmethod
     def nepali_date(date):
@@ -538,6 +548,7 @@ class StatementView(APIView):
             "Office Domestic",
             "Office International",
             "Mobile Number",
+            "Photo",
             "Interested Occupation",
             "Trainings",
             "Skills",
@@ -558,6 +569,17 @@ class StatementView(APIView):
             i_occupation = person.interestedoccupation_set.all().values_list(
                 "interested_occupation"
             )
+
+            # photo_data = ""
+            # if person.photo:
+            #     with open(person.photo.path, "rb") as photo_file:
+            #         photo_data = base64.b64encode(photo_file.read()).decode("utf-8")
+            # photo_path = ""
+            # if person.photo:
+            #     photo_path = os.path.join(settings.MEDIA_ROOT, person.photo.name)
+            photo_path = self.generate_photo_url(person.photo.name) if person.photo else ""
+
+
             person_list = [
                 person.name,
                 StatementView.get_gender(person.gender),
@@ -575,6 +597,7 @@ class StatementView(APIView):
                 person.office_domestic if person.office_domestic else "",
                 person.office_international if person.office_international else "",
                 person.mobile_number,
+                photo_path,
             ]
             iterate = zip_longest(
                 [person_list],
