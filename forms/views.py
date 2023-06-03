@@ -38,7 +38,6 @@ import os
 from django.conf import settings
 
 
-
 class GenderView(APIView):
     def get(self, request, format=None):
         genders = PersonsForm.GENDER
@@ -469,6 +468,22 @@ class StatsView(TemplateView):
                 blood_grp_count["count"].append(value)
         return blood_grp_count
 
+    def get_marriage_status_report(self):
+        marriage_grp = (
+            PersonsForm.objects.values("married")
+            .annotate(count=Count("married"))
+            .order_by("-count")
+        )
+        marriage_grp_count = {
+            "marriage_group_name": [],
+            "count": [],
+        }
+        for key, value in marriage_grp.values_list("married", "count"):
+            if key:
+                marriage_grp_count["marriage_group_name"].append(key)
+                marriage_grp_count["count"].append(value)
+        return marriage_grp_count
+
     def get_context_data(self, request, **kwargs):
         genders_count = self.get_gender_report()
         woda_count = self.get_woda_report()
@@ -480,6 +495,7 @@ class StatsView(TemplateView):
         adoccupation_count = self.get_admired_occupation_report()
         qualification_count = self.get_qualification_report()
         blood_group_count = self.get_blood_group_report()
+        marriage_count = self.get_marriage_status_report()
 
         self.extra_context = dict(
             self.model_admin.each_context(request),
@@ -493,6 +509,7 @@ class StatsView(TemplateView):
             adoccupation_count=adoccupation_count,
             qualification_count=qualification_count,
             blood_group_count=blood_group_count,
+            marriage_count=marriage_count,
         )
         return super().get_context_data(**kwargs)
 
@@ -519,10 +536,9 @@ class StatementView(APIView):
             if value in wod:
                 return wod[1]
         return PersonsForm.WODA[0][1]
-    
+
     def generate_photo_url(self, photo_name):
         return self.request.build_absolute_uri(settings.MEDIA_URL + photo_name)
-
 
     @staticmethod
     def nepali_date(date):
@@ -577,8 +593,9 @@ class StatementView(APIView):
             # photo_path = ""
             # if person.photo:
             #     photo_path = os.path.join(settings.MEDIA_ROOT, person.photo.name)
-            photo_path = self.generate_photo_url(person.photo.name) if person.photo else ""
-
+            photo_path = (
+                self.generate_photo_url(person.photo.name) if person.photo else ""
+            )
 
             person_list = [
                 person.name,
