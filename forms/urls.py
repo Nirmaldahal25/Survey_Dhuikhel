@@ -12,6 +12,7 @@ from forms.views import (
     PersonalSkillsView,
     StatementView,
     BloodGroupView,
+    MarriedView,
     # Person Views
     PersonListCreateView,
     PersonRetrieveUpdateDeleteView,
@@ -26,7 +27,7 @@ from forms.views import (
     PersonsTrainingRUDView,
     OccupationRUDView,
     # Get User
-    UserIdView,
+    LoginView,
 )
 
 from rest_framework.schemas import get_schema_view
@@ -46,12 +47,13 @@ urlpatterns = [
     path("list/occupations/", view=OccupationsView.as_view(), name="list_occupations"),
     path("list/skills/", view=PersonalSkillsView.as_view(), name="list_skills"),
     path("list/bloodgroups/", view=BloodGroupView.as_view(), name="list_blood_groups"),
+    path("list/marriage/", view=MarriedView.as_view(), name="list_married_stats"),
     path(
         "list/admiredoccupations/",
         view=AdmiredOccuptionView.as_view(),
         name="list_admired_occupations",
     ),
-    path("user/", view=UserIdView.as_view(), name="get_user_id"),
+    path("user/login/", view=LoginView.as_view(), name="get_user_id"),
     path(
         "persons/<int:person>/admiredoccupations/<int:pk>/",
         view=InterestedOccupationRUDView.as_view(),

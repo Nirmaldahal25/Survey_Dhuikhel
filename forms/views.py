@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
@@ -22,6 +23,7 @@ from forms.serializers import (
     PersonTrainingsSerializer,
     PersonSkillsSerializer,
     OccupationSerializer,
+    LoginSerializer,
 )
 from django.views.generic import TemplateView
 from itertools import zip_longest
@@ -157,6 +159,13 @@ class AdmiredOccuptionView(APIView):
 
         ad_occupations_dict[data + 1] = "अन्य"
         return Response(data=ad_occupations_dict, status=status.HTTP_200_OK)
+
+
+class MarriedView(APIView):
+    def get(self, request, format=None):
+        marriage = PersonsForm.MARRIED_STATUS
+        marriage_dict = {key: value for key, value in marriage}
+        return Response(data=marriage_dict, status=status.HTTP_200_OK)
 
 
 class CasteView(APIView):
@@ -587,18 +596,21 @@ class StatementView(APIView):
         return response
 
 
-class UserIdView(APIView):
-    permission_classes = [
-        IsAuthenticated,
-    ]
-
-    def get(get, request, format=None):
-        if request and request.user:
-            user = request.user
-            return Response(
-                {"id": user.id, "name": user.first_name + " " + user.last_name},
-                status=status.HTTP_200_OK,
-            )
-        return Response(
-            {"error": "user not found"}, status=status.HTTP_401_UNAUTHORIZED
+class LoginView(APIView):
+    def post(self, request, format=None):
+        serializer = LoginSerializer(
+            data=self.request.data, context={"request": self.request}
         )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
+        token, created = Token.objects.get_or_create(user=user)
+        if not created:
+            token.key = token.generate_key()
+            token.save()
+        userdict = {
+            "username": user.username,
+            "name": f"{user.first_name} {user.last_name}",
+            "email": user.email,
+            "token": token.key,
+        }
+        return Response(data=userdict, status=status.HTTP_200_OK)

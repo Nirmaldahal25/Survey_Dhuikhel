@@ -80,6 +80,11 @@ class PersonsForm(models.Model):
         (8, "O-"),
         (9, "थाछैन"),
     )
+
+    MARRIED_STATUS = (
+        (1, "विवाहित"),
+        (2, "अविवाहित"),
+    )
     name = models.CharField(max_length=256, null=False, blank=False)
     gender = models.IntegerField(choices=GENDER, null=False, blank=False)
     permanent_address = models.IntegerField(choices=WODA, blank=False, null=False)
@@ -94,7 +99,7 @@ class PersonsForm(models.Model):
     qualification = models.CharField(blank=False, null=False, max_length=200)
     office_domestic = models.CharField(blank=True, null=True, max_length=400)
     office_international = models.CharField(blank=True, null=True, max_length=400)
-
+    married = models.IntegerField(choices=MARRIED_STATUS, blank=False, null=False)
     phone_regex = RegexValidator(
         regex=r"^(\+\d{1,3})?,?\s?\d{8,13}",
         message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
@@ -181,6 +186,7 @@ class Occupation(models.Model):
         9: "होटल व्यवसायी",
         10: "आफ्नै व्यवसायी",
         11: "कुनै पेशा रोजगारमा संलग्न नरहेको",
+        12: "गृहणी",
     }
     occupation = models.CharField(blank=False, null=False, max_length=400)
     person = models.ForeignKey(
