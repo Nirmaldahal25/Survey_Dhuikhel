@@ -44,8 +44,8 @@ class About(models.Model):
     name = models.CharField(max_length=122, null=False, blank=False)
     email = models.CharField(max_length=122, null=True, blank=True)
     mobile_number = models.PositiveIntegerField(null=False, blank=False)
-    position = models.CharField(max_length=100)
-    address = models.IntegerField(choices=WODA, blank=False, null=False)
+    position = models.CharField(max_length=200, blank=True, null=True)
+    address = models.IntegerField(choices=WODA, blank=True, null=True)
     photo = models.ImageField(
         null=True, blank=True, upload_to=save_user_photo, storage=OverwriteStorage()
     )
