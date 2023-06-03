@@ -61,13 +61,18 @@ class PersonsFormAdmin(admin.ModelAdmin):
         "fathers_name",
         "mothers_name",
         "submitter_name",
-        "display_photo"
+        "display_photo",
     )
 
     def display_photo(self, obj):
         if obj.photo:
-            return format_html('<a href="{}"><img src="{}" width="50px" /></a>', obj.photo.url, obj.photo.url)
+            return format_html(
+                '<a href="{}"><img src="{}" width="50px" /></a>',
+                obj.photo.url,
+                obj.photo.url,
+            )
         return "-"
+
     display_photo.short_description = "Photo"
 
     def age(self, obj):
@@ -76,6 +81,8 @@ class PersonsFormAdmin(admin.ModelAdmin):
         return 0
 
     def birthday(self, obj):
+        if not obj.bday:
+            return "none"
         dat = nepali_datetime.date.from_datetime_date(obj.bday)
         return dat.strftime("%K-%n-%D")
 
