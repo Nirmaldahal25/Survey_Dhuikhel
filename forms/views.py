@@ -30,6 +30,7 @@ from itertools import zip_longest
 import csv
 import nepali_datetime
 import codecs
+import datetime
 
 
 class GenderView(APIView):
@@ -605,7 +606,8 @@ class LoginView(APIView):
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
         if not created:
-            token.key = token.generate_key()
+            token.delete()
+            token = Token.objects.create(user=user)
             token.save()
         userdict = {
             "username": user.username,
