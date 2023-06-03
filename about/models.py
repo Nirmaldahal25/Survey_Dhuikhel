@@ -49,7 +49,7 @@ class About(models.Model):
         message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
     )
     mobile_number = models.CharField(
-        null=False, blank=False, unique=True, validators=[phone_regex], max_length=17
+        null=True, blank=True, validators=[phone_regex], max_length=17
     )
     position = models.CharField(max_length=200, blank=True, null=True)
     address = models.IntegerField(choices=WODA, blank=True, null=True)
