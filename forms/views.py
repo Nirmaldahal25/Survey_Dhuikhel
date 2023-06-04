@@ -582,7 +582,6 @@ class StatementView(APIView):
         response.write(codecs.BOM_UTF8)
         writer = csv.writer(response)
         writer.writerow(headers)
-
         for person in queryset:
             occupation = person.occupation_set.all().values_list("occupation")
             skills = person.personalskills_set.all().values_list("skills")
@@ -590,7 +589,6 @@ class StatementView(APIView):
             i_occupation = person.interestedoccupation_set.all().values_list(
                 "interested_occupation"
             )
-
             # photo_data = ""
             # if person.photo:
             #     with open(person.photo.path, "rb") as photo_file:
@@ -599,7 +597,6 @@ class StatementView(APIView):
             # if person.photo:
             #     photo_path = os.path.join(settings.MEDIA_ROOT, person.photo.name)
             photo_path = self.generate_photo_url(person.photo)
-
             person_list = [
                 person.name,
                 StatementView.get_gender(person.gender),
@@ -625,7 +622,7 @@ class StatementView(APIView):
                 list(skills),
                 list(training),
                 list(i_occupation),
-                fillvalue="",
+                fillvalue=" ",
             )
             for info in iterate:
                 row = list()
@@ -633,7 +630,7 @@ class StatementView(APIView):
                     row = [i for i in info[0]]
                     row.extend([info[1], info[2], info[3], info[4]])
                 else:
-                    row = ["" for _ in range(17)]
+                    row = [" " for _ in range(17)]
                     other = [info[1], info[2], info[3], info[4]]
                     row.extend(other)
                 writer.writerow(row)
