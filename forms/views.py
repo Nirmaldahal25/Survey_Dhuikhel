@@ -545,8 +545,10 @@ class StatementView(APIView):
 
     @staticmethod
     def nepali_date(date):
-        dat = nepali_datetime.date.from_datetime_date(date)
-        return dat.strftime("%K-%n-%D")
+        if date:
+            dat = nepali_datetime.date.from_datetime_date(date)
+            return dat.strftime("%K-%n-%D")
+        return " "
 
     def get(self, request, *args, **kwargs):
         queryset = PersonsForm.objects.all()
@@ -568,10 +570,10 @@ class StatementView(APIView):
             "Office International",
             "Mobile Number",
             "Photo",
-            "Interested Occupation",
+            "Occupation",
             "Trainings",
             "Skills",
-            "Occupation",
+            "Interested Occupation",
         ]
         response = HttpResponse(
             content_type="text/csv",
@@ -631,7 +633,7 @@ class StatementView(APIView):
                     row = [i for i in info[0]]
                     row.extend([info[1], info[2], info[3], info[4]])
                 else:
-                    row = ["" for _ in range(16)]
+                    row = ["" for _ in range(17)]
                     other = [info[1], info[2], info[3], info[4]]
                     row.extend(other)
                 writer.writerow(row)
