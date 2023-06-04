@@ -106,7 +106,7 @@ class PersonsForm(models.Model):
         message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
     )
     mobile_number = models.CharField(
-        null=True, blank=True, unique=True, validators=[phone_regex], max_length=17
+        null=True, blank=True, validators=[phone_regex], max_length=17
     )
     submitter = models.ForeignKey(
         User, null=False, blank=False, on_delete=models.DO_NOTHING

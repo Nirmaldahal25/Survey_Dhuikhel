@@ -109,4 +109,4 @@ urlpatterns = [
         name="api-schema",
     ),
     path("docs/", include_docs_urls(title="Forms API")),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

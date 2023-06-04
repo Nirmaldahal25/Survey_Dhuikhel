@@ -537,13 +537,18 @@ class StatementView(APIView):
                 return wod[1]
         return PersonsForm.WODA[0][1]
 
-    def generate_photo_url(self, photo_name):
-        return self.request.build_absolute_uri(settings.MEDIA_URL + photo_name)
+    def generate_photo_url(self, obj):
+        if obj:
+            return self.request.build_absolute_uri(obj.url)
+        else:
+            return " "
 
     @staticmethod
     def nepali_date(date):
-        dat = nepali_datetime.date.from_datetime_date(date)
-        return dat.strftime("%K-%n-%D")
+        if date:
+            dat = nepali_datetime.date.from_datetime_date(date)
+            return dat.strftime("%K-%n-%D")
+        return " "
 
     def get(self, request, *args, **kwargs):
         queryset = PersonsForm.objects.all()
@@ -560,15 +565,15 @@ class StatementView(APIView):
             "Mothers Name",
             "Religion",
             "Caste",
-            "Qulification",
+            "Qualification",
             "Office Domestic",
             "Office International",
             "Mobile Number",
             "Photo",
-            "Interested Occupation",
+            "Occupation",
             "Trainings",
             "Skills",
-            "Occupation",
+            "Interested Occupation",
         ]
         response = HttpResponse(
             content_type="text/csv",
@@ -577,15 +582,17 @@ class StatementView(APIView):
         response.write(codecs.BOM_UTF8)
         writer = csv.writer(response)
         writer.writerow(headers)
-
         for person in queryset:
-            occupation = person.occupation_set.all().values_list("occupation")
-            skills = person.personalskills_set.all().values_list("skills")
-            training = person.persontrainings_set.all().values_list("training")
-            i_occupation = person.interestedoccupation_set.all().values_list(
-                "interested_occupation"
+            occupation = person.occupation_set.all().values_list(
+                "occupation", flat=True
             )
-
+            skills = person.personalskills_set.all().values_list("skills", flat=True)
+            training = person.persontrainings_set.all().values_list(
+                "training", flat=True
+            )
+            i_occupation = person.interestedoccupation_set.all().values_list(
+                "interested_occupation", flat=True
+            )
             # photo_data = ""
             # if person.photo:
             #     with open(person.photo.path, "rb") as photo_file:
@@ -593,10 +600,7 @@ class StatementView(APIView):
             # photo_path = ""
             # if person.photo:
             #     photo_path = os.path.join(settings.MEDIA_ROOT, person.photo.name)
-            photo_path = (
-                self.generate_photo_url(person.photo.name) if person.photo else ""
-            )
-
+            photo_path = self.generate_photo_url(person.photo)
             person_list = [
                 person.name,
                 StatementView.get_gender(person.gender),
@@ -619,32 +623,34 @@ class StatementView(APIView):
             iterate = zip_longest(
                 [person_list],
                 list(occupation),
-                list(skills),
                 list(training),
+                list(skills),
                 list(i_occupation),
                 fillvalue="",
             )
+
             for info in iterate:
                 row = list()
                 if info[0]:
                     row = [i for i in info[0]]
                     row.extend(
                         [
-                            info[1] if info[1] else " ",
-                            info[2] if info[2] else " ",
-                            info[3] if info[3] else " ",
-                            info[4] if info[4] else " ",
+                            info[1] if info[1] else "",
+                            info[2] if info[2] else "",
+                            info[3] if info[3] else "",
+                            info[4] if info[4] else "",
                         ]
                     )
                 else:
-                    row = ["" for _ in range(16)]
+                    row = ["" for _ in range(17)]
                     other = [
-                        info[1] if info[1] else " ",
-                        info[2] if info[2] else " ",
-                        info[3] if info[3] else " ",
-                        info[4] if info[4] else " ",
+                        info[1] if info[1] else "",
+                        info[2] if info[2] else "",
+                        info[3] if info[3] else "",
+                        info[4] if info[4] else "",
                     ]
                     row.extend(other)
+                # print(row[17])
                 writer.writerow(row)
         return response
 
