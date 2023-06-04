@@ -628,10 +628,22 @@ class StatementView(APIView):
                 row = list()
                 if info[0]:
                     row = [i for i in info[0]]
-                    row.extend([info[1], info[2], info[3], info[4]])
+                    row.extend(
+                        [
+                            info[1] if info[1] else " ",
+                            info[2] if info[2] else " ",
+                            info[3] if info[3] else " ",
+                            info[4] if info[4] else " ",
+                        ]
+                    )
                 else:
                     row = ["" for _ in range(16)]
-                    other = [info[1], info[2], info[3], info[4]]
+                    other = [
+                        info[1] if info[1] else " ",
+                        info[2] if info[2] else " ",
+                        info[3] if info[3] else " ",
+                        info[4] if info[4] else " ",
+                    ]
                     row.extend(other)
                 writer.writerow(row)
         return response
