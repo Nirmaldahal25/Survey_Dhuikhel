@@ -565,7 +565,7 @@ class StatementView(APIView):
             "Mothers Name",
             "Religion",
             "Caste",
-            "Qulification",
+            "Qualification",
             "Office Domestic",
             "Office International",
             "Mobile Number",
