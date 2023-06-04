@@ -537,8 +537,11 @@ class StatementView(APIView):
                 return wod[1]
         return PersonsForm.WODA[0][1]
 
-    def generate_photo_url(self, photo_name):
-        return self.request.build_absolute_uri(settings.MEDIA_URL + photo_name)
+    def generate_photo_url(self, obj):
+        if obj:
+            return self.request.build_absolute_uri(obj.url)
+        else:
+            return " "
 
     @staticmethod
     def nepali_date(date):
@@ -593,9 +596,7 @@ class StatementView(APIView):
             # photo_path = ""
             # if person.photo:
             #     photo_path = os.path.join(settings.MEDIA_ROOT, person.photo.name)
-            photo_path = (
-                self.generate_photo_url(person.photo.name) if person.photo else ""
-            )
+            photo_path = self.generate_photo_url(person.photo)
 
             person_list = [
                 person.name,
